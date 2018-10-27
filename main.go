@@ -4,8 +4,8 @@ import (
 	"os"
 	"strconv"
 
+	_ "github.com/Dimitriy14/easytrip/routers"
 	"github.com/astaxie/beego"
-	_ "github.com/oreuta/easytrip/routers"
 )
 
 func main() {
