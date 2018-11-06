@@ -1,8 +1,8 @@
 package routers
 
 import (
-	"github.com/Dimitriy14/easytrip/controllers"
 	"github.com/astaxie/beego"
+	"github.com/oreuta/easytrip/controllers"
 )
 
 func init() {

@@ -1,6 +1,7 @@
 package clients
 
 import (
+	"io/ioutil"
 	"net/http"
 )
 
@@ -11,10 +12,9 @@ type BankUAClient interface {
 
 // BankUAClientImpl implements BankUAClient interface
 type BankUAClientImpl struct {
-	baseURL string
+	baseURL    string
 	httpClient *http.Client
 }
-
 
 // Get returns a remote Bank Service response
 func Get() (body []byte, err error) {
@@ -22,7 +22,7 @@ func Get() (body []byte, err error) {
 	if err != nil {
 		return
 	}
-	
+
 	defer func() {
 		if res.Body != nil {
 			res.Body.Close()
@@ -33,9 +33,9 @@ func Get() (body []byte, err error) {
 }
 
 // New creates a new BankUAClient instance
-func New() BankUAClient {
-	return &BankUAClientImpl{
-	baseURL: "http://sdfasdf",
-	httpClient &http.Client{},	
+func New() BankUAClientImpl {
+	return BankUAClientImpl{
+		baseURL:    "http://sdfasdf",
+		httpClient: &http.Client{},
 	}
 }
