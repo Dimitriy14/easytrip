@@ -17,6 +17,7 @@ func UsdBankBestBuy(bankPrivatBuy, bankPireusBuy, bankOTPBuy float64) func(float
 	} else {
 		fmt.Print(bankOTPBuy)
 	}
+	return
 }
 func EurBankBestBuy(bankPrivatBuy, bankPireusBuy, bankOTPBuy float64) func(float64) float64 {
 
@@ -27,6 +28,7 @@ func EurBankBestBuy(bankPrivatBuy, bankPireusBuy, bankOTPBuy float64) func(float
 	} else {
 		fmt.Print(bankOTPBuy)
 	}
+	return
 }
 func UsdBankBestSale(bankPrivatSale, bankPireusSale, bankOTPSale float64) func(float64) float64 {
 
@@ -37,6 +39,7 @@ func UsdBankBestSale(bankPrivatSale, bankPireusSale, bankOTPSale float64) func(f
 	} else {
 		fmt.Print(bankOTPSale)
 	}
+	return
 }
 func EurBankBestSale(bankPrivatSale, bankPireusSale, bankOTPSale float64) func(float64) float64 {
 
@@ -47,6 +50,7 @@ func EurBankBestSale(bankPrivatSale, bankPireusSale, bankOTPSale float64) func(f
 	} else {
 		fmt.Print(bankOTPSale)
 	}
+	return
 }
 func NewCurrencyBank(BankName string, CodeAlpha string, RateBuy float64, RateSale float64) RatesController {
 	return &CurrencyBank{
@@ -55,6 +59,7 @@ func NewCurrencyBank(BankName string, CodeAlpha string, RateBuy float64, RateSal
 		RateBuy,
 		RateSale,
 	}
+	return
 }
 
 func main() {
