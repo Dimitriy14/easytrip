@@ -35,7 +35,7 @@ func Get() (body []byte, err error) {
 // New creates a new BankUAClient instance
 func New() BankUAClientImpl {
 	return BankUAClientImpl{
-		baseURL:    "http://sdfasdf",
+		baseURL:    "http://bank-ua.com/export/exchange_rate_cash.json",
 		httpClient: &http.Client{},
 	}
 }
