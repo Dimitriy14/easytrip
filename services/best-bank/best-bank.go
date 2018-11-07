@@ -10,9 +10,9 @@ import (
 
 func UsdBankBestBuy(bankPrivatBuy, bankPireusBuy, bankOTPBuy float64) func(float64) float64 {
 
-	if bankPrivatBuy > bankPireusBuy || bankPrivatBuy > bankOTPBuy {
+	if bankPrivatBuy > bankPireusBuy && bankPrivatBuy > bankOTPBuy {
 		fmt.Print(bankPrivatBuy)
-	} else if bankPireusBuy > bankPrivatBuy || bankPireusBuy > bankOTPBuy {
+	} else if bankPireusBuy > bankPrivatBuy && bankPireusBuy > bankOTPBuy {
 		fmt.Print(bankPireusBuy)
 	} else {
 		fmt.Print(bankOTPBuy)
@@ -20,9 +20,9 @@ func UsdBankBestBuy(bankPrivatBuy, bankPireusBuy, bankOTPBuy float64) func(float
 }
 func EurBankBestBuy(bankPrivatBuy, bankPireusBuy, bankOTPBuy float64) func(float64) float64 {
 
-	if bankPrivatBuy > bankPireusBuy || bankPrivatBuy > bankOTPBuy {
+	if bankPrivatBuy > bankPireusBuy && bankPrivatBuy > bankOTPBuy {
 		fmt.Print(bankPrivatBuy)
-	} else if bankPireusBuy > bankPrivatBuy || bankPireusBuy > bankOTPBuy {
+	} else if bankPireusBuy > bankPrivatBuy && bankPireusBuy > bankOTPBuy {
 		fmt.Print(bankPireusBuy)
 	} else {
 		fmt.Print(bankOTPBuy)
@@ -30,7 +30,7 @@ func EurBankBestBuy(bankPrivatBuy, bankPireusBuy, bankOTPBuy float64) func(float
 }
 func UsdBankBestSale(bankPrivatSale, bankPireusSale, bankOTPSale float64) func(float64) float64 {
 
-	if bankPrivatSale < bankPireusSale || bankPrivatSale < bankOTPSale {
+	if bankPrivatSale < bankPireusSale && bankPrivatSale < bankOTPSale {
 		fmt.Print(bankPrivatSale)
 	} else if bankPireusSale < bankPrivatSale || bankPireusSale < bankOTPSale {
 		fmt.Print(bankPireusSale)
@@ -40,9 +40,9 @@ func UsdBankBestSale(bankPrivatSale, bankPireusSale, bankOTPSale float64) func(f
 }
 func EurBankBestSale(bankPrivatSale, bankPireusSale, bankOTPSale float64) func(float64) float64 {
 
-	if bankPrivatSale < bankPireusSale || bankPrivatSale < bankOTPSale {
+	if bankPrivatSale < bankPireusSale && bankPrivatSale < bankOTPSale {
 		fmt.Print(bankPrivatSale)
-	} else if bankPireusSale < bankPrivatSale || bankPireusSale < bankOTPSale {
+	} else if bankPireusSale < bankPrivatSale && bankPireusSale < bankOTPSale {
 		fmt.Print(bankPireusSale)
 	} else {
 		fmt.Print(bankOTPSale)
