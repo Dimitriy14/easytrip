@@ -59,7 +59,6 @@ func NewCurrencyBank(BankName string, CodeAlpha string, RateBuy float64, RateSal
 		RateBuy,
 		RateSale,
 	}
-	return
 }
 
 func main() {
