@@ -32,7 +32,7 @@ func UsdBankBestSale(bankPrivatSale, bankPireusSale, bankOTPSale float64) func(f
 
 	if bankPrivatSale < bankPireusSale && bankPrivatSale < bankOTPSale {
 		fmt.Print(bankPrivatSale)
-	} else if bankPireusSale < bankPrivatSale || bankPireusSale < bankOTPSale {
+	} else if bankPireusSale < bankPrivatSale && bankPireusSale < bankOTPSale {
 		fmt.Print(bankPireusSale)
 	} else {
 		fmt.Print(bankOTPSale)
