@@ -1,6 +1,7 @@
 package clients
 
 import (
+	"fmt"
 	"io/ioutil"
 	"net/http"
 )
@@ -17,10 +18,10 @@ type BankUAClientImpl struct {
 }
 
 // Get returns a remote Bank Service response
-func Get() (body []byte, err error) {
-	res, err := httpClient.Get(baseURL)
+func (bankClient BankUAClientImpl) Get() (body []byte, err error) {
+	res, err := bankClient.httpClient.Get(bankClient.baseURL)
 	if err != nil {
-		return
+		return nil, fmt.Errorf("Get url error: %v", err)
 	}
 
 	defer func() {

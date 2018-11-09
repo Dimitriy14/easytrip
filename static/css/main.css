@@ -1,0 +1,15 @@
+html, body{
+    padding: 0;
+    margin: 0;
+    width: 100%;
+}
+
+.container{
+	display: flex;
+	justify-content: center;
+}
+
+.form-window{
+	border: 3px solid #1d1d1d; 
+	padding: 10px
+}
