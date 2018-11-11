@@ -1,9 +1,6 @@
 package bestbank
 
 import (
-	"log"
-	"net/url"
-
 	"github.com/astaxie/beego"
 )
 
@@ -25,21 +22,19 @@ type BestController struct {
 }
 
 func (this *BestController) Get() {
-	urlData, err := url.ParseRequestURI(this.Ctx.Request.URL.RequestURI())
-	if err != nil {
-		log.Fatal(err)
-	}
-	urlQuerry, err := url.ParseQuery(urlData.RawQuery)
-	if err != nil {
-		log.Fatal(err)
-	}
+	/*
+		request := Request{
+			Currency: this.GetStrings("currency"),
+			Option:   this.GetString("option"),
+			Bank:     this.GetStrings("bank"),
+		}
+	*/
+	data := []CurrencyBank{}
 
-	request:= Request{Currency : urlQuerry["currency"],Option : urlQuerry["option"],Bank : urlQuerry["bank"]}
+	tmpBank := CurrencyBank{BankName: "BankName", CodeAlpha: "CodeAlpha", RateBuy: 28.01, RateSale: 29.01}
+	data = append(data, tmpBank, tmpBank)
+	//data=lilia(...)
 
-	data:=[]CurrencyBank{}
-
-	data=lilia(...)
-
-	this.Data["Data"]=data
+	this.Data["Data"] = data
 	this.TplName = "best.tpl"
 }
