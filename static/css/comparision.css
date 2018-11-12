@@ -1,7 +1,7 @@
 html, body{
     padding: 0;
     margin: 0;
-    background: linear-gradient(to bottom, #242424, #27045F) no-repeat;
+    background: linear-gradient(to right, #242424, #27045F);
     font-family: Arial, sans-serif;
     font-size: 18px;
 }
