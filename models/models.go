@@ -25,6 +25,8 @@ type CurrencyBank struct {
 //CurrencyBanks is an array of CurrencyBank
 type CurrencyBanks []CurrencyBank
 
+//?type CurrencyBanks []CurrencyBank
+
 func GetBanks() (bank CurrencyBanks, err error) {
 	client := clients.New()
 	body, err := clients.BankUAClient.Get(client)
