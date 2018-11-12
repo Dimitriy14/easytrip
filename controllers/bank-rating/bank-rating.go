@@ -28,13 +28,12 @@ func (this *RatesController) Get() {
 		Bank:     this.GetStrings("bank"),
 	}
 
-	//b := this.RatesService.GetBankRates(r)
 	b, err := this.RatesService.GetBankRates(r)
 	if err != nil {
 		beego.Error("Error:%v", err)
 	}
 
 	this.Data["Banks"] = b
-	this.Data["re"] = r
+	this.Layout = "comparision_layout.tpl"
 	this.TplName = "comparision.tpl"
 }
