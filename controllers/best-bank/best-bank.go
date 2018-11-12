@@ -31,6 +31,7 @@ func (r *RatesController) Get() {
 	}
 
 	r.Data["Error"] = err
+	r.Data["req"] = inpData.Option
 	r.Data["Sale"] = Sale
 	r.Data["Buy"] = Buy
 	r.TplName = "best.tpl"

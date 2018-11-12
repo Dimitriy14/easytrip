@@ -2,9 +2,9 @@ package bestBankService
 
 import (
 	"encoding/json"
+	"fmt"
 	"strings"
 
-	"github.com/astaxie/beego"
 	"github.com/oreuta/easytrip/clients"
 	"github.com/oreuta/easytrip/models"
 )
@@ -26,32 +26,33 @@ func New(newClient clients.BankUAClient) BestBankServiceInterface {
 }
 
 func (b BestBankService) GetBestBanksSale(data models.MainRequest) (banks []models.CurrencyBank, err error) {
+	if data.Option == "buy" {
+		return banks, nil
+	}
 	jsn, err := b.Client.Get()
 	if err != nil {
-		beego.Error("Method Get in Client BankUACient: %v", err)
-		return
+		return banks, fmt.Errorf("Method Get in Client BankUACient: %v", err)
 	}
 	err = json.Unmarshal(jsn, &banks)
 	if err != nil {
-		beego.Error("json.Unmarshal %v:", err)
-		return
+		return banks, fmt.Errorf("json.Unmarshal %v:", err)
 	}
-
-	return BestSale(FilterCurrency(data, FilterBank(data, banks))), err
+	return BestSale(data, FilterCurrency(data, FilterBank(data, banks))), nil
 }
 
 func (b BestBankService) GetBestBanksBuy(data models.MainRequest) (banks []models.CurrencyBank, err error) {
+	if data.Option == "sale" {
+		return banks, nil
+	}
 	jsn, err := b.Client.Get()
 	if err != nil {
-		beego.Error("Method Get in Client BankUACient: %v", err)
-		return
+		return banks, fmt.Errorf("Method Get in Client BankUACient: %v", err)
 	}
 	err = json.Unmarshal(jsn, &banks)
 	if err != nil {
-		beego.Error("json.Unmarshal %v:", err)
-		return
+		return banks, fmt.Errorf("Json.Unmarshal %v:", err)
 	}
-	return BestBuy(FilterCurrency(data, FilterBank(data, banks))), err
+	return BestBuy(data, FilterCurrency(data, FilterBank(data, banks))), nil
 }
 
 func FilterBank(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
@@ -105,27 +106,25 @@ func FilterCurrency(data models.MainRequest, inpBanks []models.CurrencyBank) (Ou
 }
 
 //min
-func BestSale(inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
-	var eur, usd = 999999.0, 999999.0
+func BestSale(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
+	eur := 999999.0
+	usd := 999999.0
 	for _, value := range inpBanks {
 		if value.CodeAlpha == "EUR" {
-			if value.RateSale < eur {
+			if eur > value.RateSale {
 				eur = value.RateSale
 			}
 		}
+	}
+	for _, value := range inpBanks {
 		if value.CodeAlpha == "USD" {
-			if value.RateSale < usd {
+			if usd > value.RateSale {
 				usd = value.RateSale
 			}
 		}
 	}
 	for _, value := range inpBanks {
-		if value.CodeAlpha == "EUR" && value.RateSale == eur {
-			OutpBanks = append(OutpBanks, value)
-		}
-	}
-	for _, value := range inpBanks {
-		if value.CodeAlpha == "USD" && value.RateSale == usd {
+		if (value.CodeAlpha == "EUR" && value.RateSale == eur) || (value.CodeAlpha == "USD" && value.RateSale == usd) {
 			OutpBanks = append(OutpBanks, value)
 		}
 	}
@@ -133,31 +132,28 @@ func BestSale(inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) 
 }
 
 //max
-func BestBuy(inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
-
-	var eur, usd = -1.0, -1.0
+func BestBuy(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
+	eur := 0.0
+	usd := 0.0
 	for _, value := range inpBanks {
 		if value.CodeAlpha == "EUR" {
-			if value.RateSale > eur {
-				eur = value.RateSale
+			if eur < value.RateBuy {
+				eur = value.RateBuy
 			}
 		}
+	}
+	for _, value := range inpBanks {
 		if value.CodeAlpha == "USD" {
-			if value.RateSale > usd {
-				usd = value.RateSale
+			if usd < value.RateBuy {
+				usd = value.RateBuy
 			}
 		}
 	}
+
 	for _, value := range inpBanks {
-		if value.CodeAlpha == "EUR" && value.RateSale == eur {
-			OutpBanks = append(OutpBanks, value)
-		}
-	}
-	for _, value := range inpBanks {
-		if value.CodeAlpha == "USD" && value.RateSale == usd {
+		if (value.CodeAlpha == "EUR" && value.RateBuy == eur) || (value.CodeAlpha == "USD" && value.RateBuy == usd) {
 			OutpBanks = append(OutpBanks, value)
 		}
 	}
 	return OutpBanks
-
 }
