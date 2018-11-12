@@ -1,20 +1,19 @@
 package clients
 
 import (
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
+	"log"
 	"net/http"
+
+	"github.com/oreuta/easytrip/models"
 )
 
 // BankUAClient represents a common client to interact with a remote Bank Service
 type BankUAClient interface {
 	Get() (body []byte, err error)
-}
-
-// BankUAClientImpl implements BankUAClient interface
-type BankUAClientImpl struct {
-	baseURL    string
-	httpClient *http.Client
+	GetCurrBank() (unpacked []models.CurrencyBank, err error)
 }
 
 // Get returns a remote Bank Service response
@@ -31,6 +30,26 @@ func (bankClient BankUAClientImpl) Get() (body []byte, err error) {
 	}()
 
 	return ioutil.ReadAll(res.Body)
+}
+
+// GetCurrBank returns array of structures CurrencyBank after unmarshalling
+func (bankClient BankUAClientImpl) GetCurrBank() (unpacked []models.CurrencyBank, err error) {
+	body, err := bankClient.Get()
+	if err != nil {
+		return nil, fmt.Errorf("Get url error: %v", err)
+	}
+	err = json.Unmarshal(body, &unpacked)
+	if err != nil {
+		log.Printf("Unmarshal error: %v", err)
+		return nil, fmt.Errorf("Error BankUAClient(GetCurrBank):%v", err)
+	}
+	return unpacked, err
+}
+
+// BankUAClientImpl implements BankUAClient interface
+type BankUAClientImpl struct {
+	baseURL    string
+	httpClient *http.Client
 }
 
 // New creates a new BankUAClient instance
