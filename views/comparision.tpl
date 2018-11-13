@@ -18,7 +18,7 @@
                 </ul>
             </div>
         {{end}}
+        <a href = "/" class="button">Back to main</a>
     </div>
-    
 </body>
 </html>
