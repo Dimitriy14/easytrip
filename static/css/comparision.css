@@ -1,0 +1,31 @@
+html, body{
+    padding: 0;
+    margin: 0;
+    background: linear-gradient(to right, #242424, #27045F);
+    font-family: Arial, sans-serif;
+    font-size: 18px;
+}
+
+.mycontainer{
+	width: 920px;
+	margin: 0 auto;
+	text-align: center;
+	color: #ccc;
+}
+
+.bank{
+	border: 5px solid #ccc; 
+	padding: 10px;
+	border-radius: 10px;
+	text-align: center;
+	margin-bottom: 10px;
+}
+
+ul{
+	padding: 0;
+}
+
+li{
+	list-style: none;
+	padding: 0;
+}
