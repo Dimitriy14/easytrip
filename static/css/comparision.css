@@ -21,6 +21,32 @@ html, body{
 	margin-bottom: 10px;
 }
 
+.back {
+	width: 150px;
+	display: inline-block;
+	padding: 15px 25px;
+	font-size: 18px;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	outline: none;
+	color: #fff;
+	background-color: #56416E;
+	border: none;
+	border-radius: 15px;
+	box-shadow: 0 3px #ccc;
+  }
+  
+  .back:hover {
+	  background-color: #B1A8B9;
+  }
+  
+  .back:active {
+	background-color: #B1A8B9;
+	box-shadow: 0 1px #ccc;
+	transform: translateY(4px);
+  }
+  
 ul{
 	padding: 0;
 }
