@@ -21,13 +21,14 @@ func New(service bankRatingService.RatesServiceInterface) *RatesController {
 
 //Get function gets request gives and output data on display
 func (this *RatesController) Get() {
-
 	r := models.MainRequest{
 		Currency: this.GetStrings("currency"),
 		Option:   this.GetString("option"),
 		Bank:     this.GetStrings("bank"),
 	}
-
+	if r.Currency == nil || r.Bank == nil {
+		this.Redirect("/err", 302)
+	}
 	b, err := this.RatesService.GetBankRates(r)
 	if err != nil {
 		beego.Error("Error:%v", err)
@@ -36,4 +37,12 @@ func (this *RatesController) Get() {
 	this.Data["Banks"] = b
 	this.Layout = "comparision_layout.tpl"
 	this.TplName = "comparision.tpl"
+}
+
+type ErrorController struct {
+	beego.Controller
+}
+
+func (this *ErrorController) ErrorDb() {
+	this.TplName = "err.tpl"
 }
