@@ -47,7 +47,6 @@ func TestGetBankRates(t *testing.T) {
 
 	mc := mocks.BankUAClientMock{
 		Unpacked: banks,
-		Err:      nil,
 	}
 
 	ser := New(mc)
