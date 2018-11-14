@@ -1,159 +1,69 @@
-package bestBankService
+package services
 
 import (
-	"encoding/json"
-	"fmt"
-	"strings"
-
 	"github.com/oreuta/easytrip/clients"
 	"github.com/oreuta/easytrip/models"
 )
 
-//BestBankServiceInterface ..
+//BestBankServiceInterface represents a common service to interact with BankUAClient.
 type BestBankServiceInterface interface {
-	GetBestBanksSale(r models.MainRequest) (banks []models.CurrencyBank, err error)
-	GetBestBanksBuy(r models.MainRequest) (banks []models.CurrencyBank, err error)
+	GetBestBankInfo(r models.MainRequest) (banks []models.CurrencyBank, err error)
 }
 
-//BestBankService ..
+//BestBankService implements BestBankServiceInterface interface.
 type BestBankService struct {
 	Client clients.BankUAClient
 }
 
-//New ..
+//New creates a new BestBankService instance.
 func New(newClient clients.BankUAClient) BestBankServiceInterface {
-	return &BestBankService{Client: newClient}
+	return &BestBankService{
+		Client: newClient,
+	}
 }
 
-func (b BestBankService) GetBestBanksSale(data models.MainRequest) (banks []models.CurrencyBank, err error) {
-	if data.Option == "buy" {
-		return banks, nil
+/*func BestBankSale(r models.MainRequest, banks []models.CurrencyBank) (banks []models.CurrencyBank) {
+Math.max(...array.map(func(obj){return obj.rateSale, obj.codeAlpha}))
+ }*/
+
+//BestBankBuy returns the best buy in banks.
+func BestBankBuy(r models.MainRequest, banks []models.CurrencyBank) (banks []models.CurrencyBank) {
+	for _, minValue := range banks {
+		if minValue.CodeAlpha == "USD" {
+			if usd < minValue.RateBuy {
+				usd = minValue.RateBuy
+			}
+			banks = append(banks, minValue)
+		}
 	}
-	jsn, err := b.Client.Get()
-	if err != nil {
-		return banks, fmt.Errorf("Method Get in Client BankUACient: %v", err)
+	for _, minValue := range banks {
+		if minValue.CodeAlpha == "EUR" {
+			if eur < minValue.RateBuy {
+				eur = minValue.RateBuy
+			}
+			banks = append(banks, minValue)
+		}
 	}
-	err = json.Unmarshal(jsn, &banks)
-	if err != nil {
-		return banks, fmt.Errorf("json.Unmarshal %v:", err)
-	}
-	return BestSale(data, FilterCurrency(data, FilterBank(data, banks))), nil
+	return banks
 }
 
-func (b BestBankService) GetBestBanksBuy(data models.MainRequest) (banks []models.CurrencyBank, err error) {
-	if data.Option == "sale" {
-		return banks, nil
-	}
-	jsn, err := b.Client.Get()
-	if err != nil {
-		return banks, fmt.Errorf("Method Get in Client BankUACient: %v", err)
-	}
-	err = json.Unmarshal(jsn, &banks)
-	if err != nil {
-		return banks, fmt.Errorf("Json.Unmarshal %v:", err)
-	}
-	return BestBuy(data, FilterCurrency(data, FilterBank(data, banks))), nil
-}
-
-func FilterBank(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
-	if len(data.Bank) == 0 {
-		return inpBanks
-	}
-	s := strings.Join(data.Bank, "")
-	if strings.Contains(s, "privat") {
-		for _, value := range inpBanks {
-			if value.BankName == "\u041f\u0440\u0438\u0432\u0430\u0442\u0411\u0430\u043d\u043a" {
-				OutpBanks = append(OutpBanks, value)
+//BestBankSale returns the best sale in banks.
+func BestBankSale(r models.MainRequest, banks []models.CurrencyBank) (banks []models.CurrencyBank) {
+	for _, maxValue := range banks {
+		if maxValue.CodeAlpha == "USD" {
+			if usd > maxValue.RateSale {
+				usd = maxValue.RateSale
 			}
+			banks = append(banks, maxValue)
 		}
 	}
-	if strings.Contains(s, "pireus") {
-		for _, value := range inpBanks {
-			if value.BankName == "\u041f\u0456\u0440\u0435\u0443\u0441 \u0411\u0430\u043d\u043a" {
-				OutpBanks = append(OutpBanks, value)
+	for _, maxValue := range banks {
+		if maxValue.CodeAlpha == "EUR" {
+			if eur > maxValue.RateSale {
+				eur = maxValue.RateSale
 			}
+			banks = append(banks, maxValue)
 		}
 	}
-	if strings.Contains(s, "otp") {
-		for _, value := range inpBanks {
-			if value.BankName == "\u041e\u0422\u041f \u0411\u0430\u043d\u043a" {
-				OutpBanks = append(OutpBanks, value)
-			}
-		}
-	}
-	return OutpBanks
-}
-func FilterCurrency(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
-	s := strings.Join(data.Currency, "")
-
-	if strings.Contains(s, "usd") || len(data.Currency) == 0 {
-		for _, value := range inpBanks {
-			if value.CodeAlpha == "USD" {
-				OutpBanks = append(OutpBanks, value)
-			}
-		}
-	}
-
-	if strings.Contains(s, "eur") || len(data.Currency) == 0 {
-		for _, value := range inpBanks {
-			if value.CodeAlpha == "EUR" {
-				OutpBanks = append(OutpBanks, value)
-			}
-		}
-	}
-
-	return
-}
-
-//min
-func BestSale(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
-	eur := 999999.0
-	usd := 999999.0
-	for _, value := range inpBanks {
-		if value.CodeAlpha == "EUR" {
-			if eur > value.RateSale {
-				eur = value.RateSale
-			}
-		}
-	}
-	for _, value := range inpBanks {
-		if value.CodeAlpha == "USD" {
-			if usd > value.RateSale {
-				usd = value.RateSale
-			}
-		}
-	}
-	for _, value := range inpBanks {
-		if (value.CodeAlpha == "EUR" && value.RateSale == eur) || (value.CodeAlpha == "USD" && value.RateSale == usd) {
-			OutpBanks = append(OutpBanks, value)
-		}
-	}
-	return OutpBanks
-}
-
-//max
-func BestBuy(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
-	eur := 0.0
-	usd := 0.0
-	for _, value := range inpBanks {
-		if value.CodeAlpha == "EUR" {
-			if eur < value.RateBuy {
-				eur = value.RateBuy
-			}
-		}
-	}
-	for _, value := range inpBanks {
-		if value.CodeAlpha == "USD" {
-			if usd < value.RateBuy {
-				usd = value.RateBuy
-			}
-		}
-	}
-
-	for _, value := range inpBanks {
-		if (value.CodeAlpha == "EUR" && value.RateBuy == eur) || (value.CodeAlpha == "USD" && value.RateBuy == usd) {
-			OutpBanks = append(OutpBanks, value)
-		}
-	}
-	return OutpBanks
+	return banks
 }
