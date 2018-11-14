@@ -35,6 +35,7 @@ func (this *RatesController) Get() {
 	b, err := this.RatesService.GetBankRates(r)
 	if err != nil {
 		beego.Error("Error:%v", err)
+		return
 	}
 
 	this.Data["Banks"] = b

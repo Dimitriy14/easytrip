@@ -3,6 +3,7 @@ package bestBankService
 import (
 	"encoding/json"
 	"fmt"
+	"sort"
 	"strings"
 
 	"github.com/oreuta/easytrip/clients"
@@ -10,9 +11,14 @@ import (
 )
 
 //BestBankServiceInterface ..
+/*
 type BestBankServiceInterface interface {
 	GetBestBanksSale(r models.MainRequest) (banks []models.CurrencyBank, err error)
 	GetBestBanksBuy(r models.MainRequest) (banks []models.CurrencyBank, err error)
+}
+*/
+type BestBankServiceInterface interface {
+	GetBestBanks(r models.MainRequest) (bBSale []models.CurrencyBank, bBBuy []models.CurrencyBank, err error)
 }
 
 //BestBankService ..
@@ -25,34 +31,25 @@ func New(newClient clients.BankUAClient) BestBankServiceInterface {
 	return &BestBankService{Client: newClient}
 }
 
-func (b BestBankService) GetBestBanksSale(data models.MainRequest) (banks []models.CurrencyBank, err error) {
-	if data.Option == "buy" {
-		return banks, nil
-	}
+func (b BestBankService) GetBestBanks(data models.MainRequest) (bBSale, bBBuy []models.CurrencyBank, err error) {
 	jsn, err := b.Client.Get()
 	if err != nil {
-		return banks, fmt.Errorf("Method Get in Client BankUACient: %v", err)
+		return bBSale, bBBuy, fmt.Errorf("Method Get in Client BankUACient: %v", err)
 	}
+	banks := []models.CurrencyBank{}
 	err = json.Unmarshal(jsn, &banks)
 	if err != nil {
-		return banks, fmt.Errorf("json.Unmarshal %v:", err)
+		return bBSale, bBBuy, fmt.Errorf("json.Unmarshal %v:", err)
 	}
-	return BestSale(data, FilterCurrency(data, FilterBank(data, banks))), nil
-}
+	banks = FilterCurrency(data, FilterBank(data, banks))
+	if data.Option != "buy" {
+		bBSale = BestSale(banks)
+	}
+	if data.Option != "sale" {
+		bBBuy = BestBuy(banks)
+	}
 
-func (b BestBankService) GetBestBanksBuy(data models.MainRequest) (banks []models.CurrencyBank, err error) {
-	if data.Option == "sale" {
-		return banks, nil
-	}
-	jsn, err := b.Client.Get()
-	if err != nil {
-		return banks, fmt.Errorf("Method Get in Client BankUACient: %v", err)
-	}
-	err = json.Unmarshal(jsn, &banks)
-	if err != nil {
-		return banks, fmt.Errorf("Json.Unmarshal %v:", err)
-	}
-	return BestBuy(data, FilterCurrency(data, FilterBank(data, banks))), nil
+	return bBSale, bBBuy, nil
 }
 
 func FilterBank(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
@@ -101,29 +98,30 @@ func FilterCurrency(data models.MainRequest, inpBanks []models.CurrencyBank) (Ou
 			}
 		}
 	}
-
 	return
 }
 
 //min
-func BestSale(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
-	eur := 999999.0
-	usd := 999999.0
-	for _, value := range inpBanks {
+func BestSale(inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
+	banks := append([]models.CurrencyBank(nil), inpBanks...)
+	sort.Slice(banks, func(i, j int) bool {
+		return banks[i].RateSale < banks[j].RateSale
+	})
+	var eur float64
+	var usd float64
+	for _, value := range banks {
 		if value.CodeAlpha == "EUR" {
-			if eur > value.RateSale {
-				eur = value.RateSale
-			}
+			eur = value.RateSale
+			break
 		}
 	}
-	for _, value := range inpBanks {
+	for _, value := range banks {
 		if value.CodeAlpha == "USD" {
-			if usd > value.RateSale {
-				usd = value.RateSale
-			}
+			usd = value.RateSale
+			break
 		}
 	}
-	for _, value := range inpBanks {
+	for _, value := range banks {
 		if (value.CodeAlpha == "EUR" && value.RateSale == eur) || (value.CodeAlpha == "USD" && value.RateSale == usd) {
 			OutpBanks = append(OutpBanks, value)
 		}
@@ -132,25 +130,26 @@ func BestSale(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBank
 }
 
 //max
-func BestBuy(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
-	eur := 0.0
-	usd := 0.0
-	for _, value := range inpBanks {
+func BestBuy(inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
+	banks := append([]models.CurrencyBank(nil), inpBanks...)
+	sort.Slice(banks, func(i, j int) bool {
+		return banks[i].RateBuy > banks[j].RateBuy
+	})
+	var eur float64
+	var usd float64
+	for _, value := range banks {
 		if value.CodeAlpha == "EUR" {
-			if eur < value.RateBuy {
-				eur = value.RateBuy
-			}
+			eur = value.RateBuy
+			break
 		}
 	}
-	for _, value := range inpBanks {
+	for _, value := range banks {
 		if value.CodeAlpha == "USD" {
-			if usd < value.RateBuy {
-				usd = value.RateBuy
-			}
+			usd = value.RateBuy
+			break
 		}
 	}
-
-	for _, value := range inpBanks {
+	for _, value := range banks {
 		if (value.CodeAlpha == "EUR" && value.RateBuy == eur) || (value.CodeAlpha == "USD" && value.RateBuy == usd) {
 			OutpBanks = append(OutpBanks, value)
 		}

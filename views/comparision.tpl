@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Document</title>
-    <link rel="stylesheet" href="../static/css/comparision.css">
+    <link href="/static/css/comparision.css" rel="stylesheet">
 </head>
 <body>
     <div class = "mycontainer">
