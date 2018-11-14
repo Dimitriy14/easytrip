@@ -7,6 +7,7 @@
 </head>
 <body>
     <div class = "mycontainer">
+     {{.flash.error}}
         <h1 class="page-name">Rates rating</h1>
         {{range $key, $val := .Banks}}
             <div class="bank">
@@ -18,6 +19,7 @@
                 </ul>
             </div>
         {{end}}
+        <a href="/" class="back">Back</a>
     </div>
     
 </body>

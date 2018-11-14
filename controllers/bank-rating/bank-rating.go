@@ -21,13 +21,17 @@ func New(service bankRatingService.RatesServiceInterface) *RatesController {
 
 //Get function gets request gives and output data on display
 func (this *RatesController) Get() {
-
 	r := models.MainRequest{
 		Currency: this.GetStrings("currency"),
 		Option:   this.GetString("option"),
 		Bank:     this.GetStrings("bank"),
 	}
-
+	flash := beego.NewFlash()
+	if r.Currency == nil || r.Bank == nil {
+		flash.Error("You should have chosen at least one currency and bank!")
+		flash.Store(&this.Controller)
+		//this.Redirect("/", 302)
+	}
 	b, err := this.RatesService.GetBankRates(r)
 	if err != nil {
 		beego.Error("Error:%v", err)
