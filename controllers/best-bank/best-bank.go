@@ -6,33 +6,44 @@ import (
 	"github.com/oreuta/easytrip/services/best-bank"
 )
 
-type RatesController struct {
+type bestBankController struct {
 	beego.Controller
 	BestService bestBankService.BestBankServiceInterface
 }
 
-func New(s bestBankService.BestBankServiceInterface) *RatesController {
-	return &RatesController{BestService: s}
+func New(s bestBankService.BestBankServiceInterface) *bestBankController {
+	return &bestBankController{BestService: s}
 }
 
-func (r *RatesController) Get() {
+func (r *bestBankController) Get() {
 	inpData := models.MainRequest{
 		Currency: r.GetStrings("currency"),
 		Option:   r.GetString("option"),
 		Bank:     r.GetStrings("bank"),
 	}
-	Sale, err := r.BestService.GetBestBanksSale(inpData)
+
+	Sale, Buy, err := r.BestService.GetBestBanks(inpData)
 	if err != nil {
 		beego.Error("GetBestBanks func in BestService: %v", err)
-	}
-	Buy, err := r.BestService.GetBestBanksBuy(inpData)
-	if err != nil {
-		beego.Error("GetBestBanks func in BestService: %v", err)
+		return
 	}
 
-	r.Data["Error"] = err
-	r.Data["req"] = inpData.Option
-	r.Data["Sale"] = Sale
-	r.Data["Buy"] = Buy
-	r.TplName = "best.tpl"
+	if inpData.Currency == nil || inpData.Bank == nil {
+		r.Data["error"] = "Select currency and banks"
+		r.TplName = "error.tpl"
+		return
+	}
+	if inpData.Option == "sale" {
+		r.Data["Sale"] = Sale
+		r.TplName = "bestSale.tpl"
+	}
+	if inpData.Option == "buy" {
+		r.Data["Buy"] = Buy
+		r.TplName = "bestBuy.tpl"
+	}
+	if inpData.Option == "both" {
+		r.Data["Buy"] = Buy
+		r.Data["Sale"] = Sale
+		r.TplName = "both.tpl"
+	}
 }
