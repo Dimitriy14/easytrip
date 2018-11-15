@@ -21,11 +21,7 @@ html, body{
 	margin-bottom: 10px;
 }
 
-<<<<<<< HEAD
-.button{
-=======
 .back {
->>>>>>> dbd7f9e20e2df2bb8786b76473fcf66688bd2e77
 	width: 150px;
 	display: inline-block;
 	padding: 15px 25px;
@@ -39,21 +35,6 @@ html, body{
 	border: none;
 	border-radius: 15px;
 	box-shadow: 0 3px #ccc;
-<<<<<<< HEAD
-}
-  
-.button:hover{
-	background-color: #B1A8B9;
-}
-  
-.button:active{
-	background-color: #B1A8B9;
-	box-shadow: 0 1px #ccc;
-	transform: translateY(4px);
-}
-  
-
-=======
   }
   
   .back:hover {
@@ -66,7 +47,6 @@ html, body{
 	transform: translateY(4px);
   }
   
->>>>>>> dbd7f9e20e2df2bb8786b76473fcf66688bd2e77
 ul{
 	padding: 0;
 }

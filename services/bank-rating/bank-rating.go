@@ -31,16 +31,6 @@ func New(newClient clients.BankUAClient) RatesServiceInterface {
 	}
 }
 
-//valueInSlice checks if the slice consists needed string
-func valueInSlice(value string, list []string) bool {
-	for _, v := range list {
-		if v == value {
-			return true
-		}
-	}
-	return false
-}
-
 //getCurrency сuts currency field object of remote Bank Service according to site request
 func getCurrency(r models.MainRequest, unpacked []models.CurrencyBank) (banks []models.CurrencyBank) {
 	for _, v := range r.Currency {

@@ -26,16 +26,11 @@ func (this *RatesController) Get() {
 		Option:   this.GetString("option"),
 		Bank:     this.GetStrings("bank"),
 	}
-<<<<<<< HEAD
-	if r.Currency == nil || r.Bank == nil {
-		this.Redirect("/err", 302)
-=======
 	flash := beego.NewFlash()
 	if r.Currency == nil || r.Bank == nil {
 		flash.Error("You should have chosen at least one currency and bank!")
 		flash.Store(&this.Controller)
 		//this.Redirect("/", 302)
->>>>>>> dbd7f9e20e2df2bb8786b76473fcf66688bd2e77
 	}
 	b, err := this.RatesService.GetBankRates(r)
 	if err != nil {

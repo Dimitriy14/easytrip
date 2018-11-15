@@ -19,11 +19,7 @@
                 </ul>
             </div>
         {{end}}
-<<<<<<< HEAD
-        <a href = "/" class="button">Back to main</a>
-=======
         <a href="/" class="back">Back</a>
->>>>>>> dbd7f9e20e2df2bb8786b76473fcf66688bd2e77
     </div>
 </body>
 </html>
