@@ -26,6 +26,7 @@ func (this *RatesController) Get() {
 		Option:   this.GetString("option"),
 		Bank:     this.GetStrings("bank"),
 	}
+<<<<<<< HEAD
 	if r.Currency == nil {
 		this.Data["IncorrectCurrency"] = true
 		this.TplName = "index.tpl"
@@ -34,6 +35,13 @@ func (this *RatesController) Get() {
 		this.Data["IncorrectBank"] = true
 		this.TplName = "index.tpl"
 		return
+=======
+	flash := beego.NewFlash()
+	if r.Currency == nil || r.Bank == nil {
+		flash.Error("You should have chosen at least one currency and bank!")
+		flash.Store(&this.Controller)
+		//this.Redirect("/", 302)
+>>>>>>> 35954cd064d125c358f7a971cf8f89cd0441b712
 	}
 	b, err := this.RatesService.GetBankRates(r)
 	if err != nil {
@@ -45,4 +53,12 @@ func (this *RatesController) Get() {
 
 	this.Layout = "comparision_layout.tpl"
 	this.TplName = "comparision.tpl"
+}
+
+type ErrorController struct {
+	beego.Controller
+}
+
+func (this *ErrorController) ErrorDb() {
+	this.TplName = "err.tpl"
 }

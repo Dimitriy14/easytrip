@@ -12,4 +12,10 @@
             </div>
         {{end}}
         <a href="/" class="back">Back</a>
+<<<<<<< HEAD
     </div>
+=======
+    </div>
+</body>
+</html>
+>>>>>>> 35954cd064d125c358f7a971cf8f89cd0441b712

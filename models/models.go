@@ -17,3 +17,12 @@ type CurrencyBank struct {
 
 //CurrencyBanks is an array of CurrencyBank
 type CurrencyBanks []CurrencyBank
+
+func Bank() map[string]string {
+	banksMap := map[string]string{
+		"privat": "ПриватБанк",
+		"otp":    "ОТП Банк",
+		"pireus": "Піреус Банк",
+	}
+	return banksMap
+}

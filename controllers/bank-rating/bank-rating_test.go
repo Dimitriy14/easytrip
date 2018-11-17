@@ -28,4 +28,8 @@ func TestGet(t *testing.T) {
 	}
 	ratesController := New(mserv)
 
+<<<<<<< HEAD
+=======
+	ratesController.Get()
+>>>>>>> 35954cd064d125c358f7a971cf8f89cd0441b712
 }
