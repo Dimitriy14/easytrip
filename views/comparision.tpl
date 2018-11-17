@@ -1,11 +1,3 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Document</title>
-    <link href="/static/css/comparision.css" rel="stylesheet">
-</head>
-<body>
     <div class = "mycontainer">
      {{.flash.error}}
         <h1 class="page-name">Rates rating</h1>
@@ -21,6 +13,3 @@
         {{end}}
         <a href="/" class="back">Back</a>
     </div>
-    
-</body>
-</html>

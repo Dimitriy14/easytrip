@@ -28,5 +28,4 @@ func TestGet(t *testing.T) {
 	}
 	ratesController := New(mserv)
 
-	ratesController.Get()
 }
