@@ -8,27 +8,36 @@
 </head>
 <body>
 <div class="bestBank">
-<h1>Продажа</h1>
+<div class="mycontainer">
+<div class="form-window">
+<h1>Best sale</h1>
 <ul>
 {{range .Sale}}
 <li>
-Банк: {{.BankName}}<br>Валюта: {{.CodeAlpha}}<br>Покупка: {{.RateBuy}}<br>Продажа: {{.RateSale}}<br>
+Bank: {{.BankName}}<br>Currency: {{.CodeAlpha}}<br>Sale: {{.RateSale}}<br>
 </li>
 <br>
 {{end}}
 </ul>
 </div>
-
+</div>
+</div>
+<br>
 <div class="bestBank">
-<h1>Покупка</h1>
+<div class = "mycontainer">
+<div class="form-window">
+<h1>Best buy</h1>
 <ul>
 {{range .Buy}}
 <li>
-Банк: {{.BankName}}<br>Валюта: {{.CodeAlpha}}<br>Покупка: {{.RateBuy}}<br>Продажа: {{.RateSale}}<br>
+Bank: {{.BankName}}<br>Currency: {{.CodeAlpha}}<br>Buy: {{.RateBuy}}<br>
 </li>
 <br>
 {{end}}
 </ul>
+<a href="/" class="back">Back</a>
+</div>
+</div>
 </div>
 </body>
 </html>
