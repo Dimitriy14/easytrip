@@ -23,6 +23,7 @@ func Bank() map[string]string {
 		"privat": "ПриватБанк",
 		"otp":    "ОТП Банк",
 		"pireus": "Піреус Банк",
+		"kredo":  "Кредобанк",
 	}
 	return banksMap
 }
