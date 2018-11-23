@@ -1,5 +1,4 @@
     <div class = "mycontainer">
-     {{.flash.error}}
         <h1 class="page-name">Rates rating</h1>
         {{range $key, $val := .Banks}}
             <div class="bank">
@@ -12,10 +11,4 @@
             </div>
         {{end}}
         <a href="/" class="back">Back</a>
-<<<<<<< HEAD
     </div>
-=======
-    </div>
-</body>
-</html>
->>>>>>> 35954cd064d125c358f7a971cf8f89cd0441b712

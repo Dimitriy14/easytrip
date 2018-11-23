@@ -1,35 +1,12 @@
 package bankRatingController
 
 import (
+	"net/http"
 	"testing"
-
-	"github.com/oreuta/easytrip/mocks"
-	"github.com/oreuta/easytrip/models"
 )
 
-func TestGet(t *testing.T) {
-	banks := []models.CurrencyBank{
-		{
-			BankName:  "ПриватБанк",
-			CodeAlpha: "USD",
-			RateBuy:   66.6,
-			RateSale:  33.3,
-		},
-		{
-			BankName:  "Піреус Банк",
-			CodeAlpha: "USD",
-			RateBuy:   229,
-			RateSale:  22,
-		},
-	}
+func TestRoute(t *testing.T) {
 
-	mserv := mocks.RatesServiceMock{
-		Banks: banks,
-	}
-	ratesController := New(mserv)
+	Get()
 
-<<<<<<< HEAD
-=======
-	ratesController.Get()
->>>>>>> 35954cd064d125c358f7a971cf8f89cd0441b712
 }

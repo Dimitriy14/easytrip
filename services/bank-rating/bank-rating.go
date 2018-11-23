@@ -33,19 +33,11 @@ func New(newClient clients.BankUAClient) RatesServiceInterface {
 
 //getCurrency сuts currency field object of remote Bank Service according to site request
 func getCurrency(r models.MainRequest, unpacked []models.CurrencyBank) (banks []models.CurrencyBank) {
+	currencyMap := models.Currency()
 	for _, v := range r.Currency {
-		switch v {
-		case "usd":
-			for i := range unpacked {
-				if unpacked[i].CodeAlpha == "USD" {
-					banks = append(banks, unpacked[i])
-				}
-			}
-		case "eur":
-			for i := range unpacked {
-				if unpacked[i].CodeAlpha == "EUR" {
-					banks = append(banks, unpacked[i])
-				}
+		for i := range unpacked {
+			if unpacked[i].CodeAlpha == currencyMap[v] {
+				banks = append(banks, unpacked[i])
 			}
 		}
 	}

@@ -26,3 +26,11 @@ func Bank() map[string]string {
 	}
 	return banksMap
 }
+
+func Currency() map[string]string {
+	currencyMap := map[string]string{
+		"usd": "USD",
+		"eur": "EUR",
+	}
+	return currencyMap
+}
