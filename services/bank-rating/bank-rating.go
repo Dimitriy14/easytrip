@@ -3,8 +3,11 @@ package bankRatingService
 import (
 	"sort"
 
+	"github.com/astaxie/beego"
+
 	"github.com/oreuta/easytrip/clients"
 	"github.com/oreuta/easytrip/models"
+	"github.com/oreuta/easytrip/sql1"
 )
 
 //RatesServiceInterface represents a common service to interact with BankUAClient
@@ -14,7 +17,11 @@ type RatesServiceInterface interface {
 
 //GetBankRates returns list of Banks response
 func (obj *BankRatingService) GetBankRates(r models.MainRequest) (banks []models.CurrencyBank, err error) {
+	conn := sql1.CreateConnect(beego.AppConfig.String("connect"))
 	unpack, err := obj.Client.GetCurrBank()
+	if err != nil {
+		unpack, err = sql1.JsnChanger(conn)
+	}
 	banks = getOption(r, getBanks(r, getCurrency(r, unpack)))
 	return
 }

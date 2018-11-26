@@ -7,6 +7,8 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/astaxie/beego"
+
 	"github.com/oreuta/easytrip/models"
 )
 
@@ -56,7 +58,7 @@ type BankUAClientImpl struct {
 //*realize throu interface
 func New() BankUAClientImpl {
 	return BankUAClientImpl{
-		baseURL:    "http://bank-ua.com/export/exchange_rate_cash.json",
+		baseURL:    beego.AppConfig.String("urlBank"),
 		httpClient: &http.Client{},
 	}
 }
