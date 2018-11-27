@@ -12,7 +12,8 @@ import (
 )
 
 var Db *sql.DB
-Db = sql1.CreateConnect(beego.AppConfig.String("connect"))
+
+//Db = sql1.CreateConnect(beego.AppConfig.String("connect"))
 func main() {
 	var err error
 	port := os.Getenv("PORT")
