@@ -1,7 +1,10 @@
 package bankRatingController
 
 import (
+	"time"
+
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/toolbox"
 	"github.com/oreuta/easytrip/models"
 	"github.com/oreuta/easytrip/services/bank-rating"
 )
@@ -21,17 +24,19 @@ func New(service bankRatingService.RatesServiceInterface) *RatesController {
 
 //Get function gets request gives and output data on display
 func (this *RatesController) Get() {
+	toolbox.StatisticsMap.AddStatistics("GET", "/comparision", "&controllers.bankRatingController.RatesController", time.Duration(13000))
 	r := models.MainRequest{
 		Currency: this.GetStrings("currency"),
 		Option:   this.GetString("option"),
 		Bank:     this.GetStrings("bank"),
 	}
-	flash := beego.NewFlash()
 	if r.Currency == nil || r.Bank == nil {
-		flash.Error("You should have chosen at least one currency and bank!")
-		flash.Store(&this.Controller)
-		//this.Redirect("/", 302)
+		this.Data["IncorrectCurrency"] = true
+		this.Data["IncorrectBank"] = true
+		this.TplName = "index.tpl"
+		return
 	}
+
 	b, err := this.RatesService.GetBankRates(r)
 	if err != nil {
 		beego.Error("Error:%v", err)
@@ -39,6 +44,7 @@ func (this *RatesController) Get() {
 	}
 
 	this.Data["Banks"] = b
+
 	this.Layout = "comparision_layout.tpl"
 	this.TplName = "comparision.tpl"
 }
