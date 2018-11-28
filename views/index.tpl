@@ -12,6 +12,9 @@
       <div class="form-window">
         <form action = "/best" name=f1 method = "GET">
           <h2>Choose your currency</h2>
+          <div class="warning">
+            <p>{{.warningCurrency}}</p>
+          </div>
           <p><label><input onClick="setAllCheckboxes('currency', this);" type="checkbox" />Select All</label></p>
           <div id="currency">
             <p><label><input type="checkbox" name="currency" value="usd">USD</label></p>
@@ -22,6 +25,9 @@
           <p><label><input type="radio" name="option" value="sale">Sale</label></p>
           <p><label><input type="radio" name="option" value="both" checked>Both</label></p>
           <h2>Choose your banks</h2>
+          <div class="warning">
+            <p>{{.warningBank}}</p>
+          </div>
           <p><label><input onClick="setAllCheckboxes('banks', this);" type="checkbox" />Select All</label></p>
           <div id="banks">
             <p><label><input type="checkbox" name="bank" value="privat">Privat Bank</label></p>

@@ -29,6 +29,11 @@ html, body{
 	text-align: center;
 }
 
+.warning {
+  color: red;
+  font-size: 18px;
+}
+
 .button {
   width: 150px;
   display: inline-block;
