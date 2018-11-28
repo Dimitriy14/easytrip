@@ -1,7 +1,6 @@
 package bestBankService
 
 import (
-	"encoding/json"
 	"fmt"
 	"sort"
 	"strings"
@@ -42,23 +41,21 @@ func New(newClient clients.BankUAClient) BestBankServiceInterface {
 }
 
 func (b BestBankService) GetBestBanks(data models.MainRequest) (bBSale, bBBuy []models.CurrencyBank, err error) {
-	jsn, err := b.Client.Get()
+	banks, err := b.Client.GetCurrBank()
 	if err != nil {
+
 		return nil, nil, fmt.Errorf("Method Get in Client BankUACient: %v", err)
 	}
-	banks := []models.CurrencyBank{}
-	err = json.Unmarshal(jsn, &banks)
-	if err != nil {
-		return nil, nil, fmt.Errorf("json.Unmarshal %v:", err)
-	}
+
 	banks = FilterCurrency(data, FilterBank(data, banks))
+
 	if data.Option != nameOfOption["buy"] {
 		bBSale = BestSale(banks)
 	}
 	if data.Option != nameOfOption["sale"] {
 		bBBuy = BestBuy(banks)
 	}
-	return bBSale, bBBuy, nil
+	return bBSale, bBBuy, err
 }
 
 func FilterBank(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {

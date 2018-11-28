@@ -1,7 +1,6 @@
 package main
 
 import (
-	"database/sql"
 	"os"
 	"strconv"
 
@@ -11,8 +10,6 @@ import (
 	"github.com/oreuta/easytrip/sql1"
 )
 
-var Db *sql.DB
-Db = sql1.CreateConnect(beego.AppConfig.String("connect"))
 func main() {
 	var err error
 	port := os.Getenv("PORT")
@@ -24,8 +21,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	Db = sql1.CreateConnect(beego.AppConfig.String("connect"))
-	go sql1.Update(Db)
-	defer Db.Close()
+	sql1.Db = sql1.CreateConnect(beego.AppConfig.String("connect"))
+
+	go sql1.Update(sql1.Db)
 	beego.Run()
 }

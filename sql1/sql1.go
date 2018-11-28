@@ -9,6 +9,13 @@ import (
 	"github.com/oreuta/easytrip/models"
 )
 
+var Db *sql.DB
+
+func init() {
+	Db = CreateConnect("root:1234@tcp(localhost:3306)/test")
+	_ = Db
+}
+
 //CreateConnect open connection to MySQL database
 func CreateConnect(connection string) (Db *sql.DB) {
 	var err error
@@ -21,13 +28,14 @@ func CreateConnect(connection string) (Db *sql.DB) {
 
 //Update updates information from BankUAclient to database
 func Update(Db *sql.DB) error {
+	a := clients.New()
+	var err error
+	var res []models.CurrencyBank
+	res, err = a.GetCurrBank()
+	if err != nil {
+		fmt.Printf("err fo update sql is : %v", err)
+	}
 	for {
-		ratesclient := clients.New()
-		res, err := ratesclient.GetCurrBank()
-		if err != nil {
-			return fmt.Errorf("Cant get banks list from client: %v", err)
-
-		}
 		for i := range res {
 			_, err := Db.Query("update BanksList set RateBuy=? RateSale=? where BankName=? and CodeAlpha=?", res[i].RateBuy, res[i].RateSale, res[i].BankName, res[i].CodeAlpha)
 			if err != nil {
