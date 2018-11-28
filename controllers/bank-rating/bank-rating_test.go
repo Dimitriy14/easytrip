@@ -7,6 +7,4 @@ import (
 
 func TestRoute(t *testing.T) {
 
-	Get()
-
 }
