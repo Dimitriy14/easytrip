@@ -26,5 +26,5 @@
 </ul>
 </div>
 {{end}}
-
+<a href="/" class="back">Back</a>
 </div>
