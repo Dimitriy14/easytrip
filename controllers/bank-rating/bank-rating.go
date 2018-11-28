@@ -3,7 +3,6 @@ package bankRatingController
 import (
 	"github.com/astaxie/beego"
 	"github.com/oreuta/easytrip/models"
-	"github.com/oreuta/easytrip/services/bank-rating"
 )
 
 //RatesController is a controller for comparing page
