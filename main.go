@@ -10,6 +10,12 @@ import (
 	"github.com/oreuta/easytrip/sql1"
 )
 
+<<<<<<< HEAD
+=======
+var Db *sql.DB
+
+//Db = sql1.CreateConnect(beego.AppConfig.String("connect"))
+>>>>>>> 56173e6fc7fab13618241a74d8fdffd58af8ea23
 func main() {
 	var err error
 	port := os.Getenv("PORT")

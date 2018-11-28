@@ -1,7 +1,10 @@
 package bestBankController
 
 import (
+	"time"
+
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/toolbox"
 	"github.com/oreuta/easytrip/models"
 	"github.com/oreuta/easytrip/services/best-bank"
 )
@@ -16,6 +19,7 @@ func New(s bestBankService.BestBankServiceInterface) *bestBankController {
 }
 
 func (r *bestBankController) Get() {
+	toolbox.StatisticsMap.AddStatistics("GET", "/best", "&controllers.bestBankController.bestBankController", time.Duration(15000))
 	inpData := models.MainRequest{
 		Currency: r.GetStrings("currency"),
 		Option:   r.GetString("option"),
