@@ -9,7 +9,7 @@ html, body{
 }
 
 .container{
-	width: 100%;
+  width: 100%;
   height: 100%;
 }
 
@@ -45,6 +45,22 @@ html, body{
   box-shadow: 0 3px #ccc;
 }
 
+.back {
+	width: 150px;
+	display: inline-block;
+	padding: 15px 25px;
+	font-size: 18px;
+	cursor: pointer;
+	text-align: center;
+	text-decoration: none;
+	outline: none;
+	color: #fff;
+	background-color: #56416E;
+	border: none;
+	border-radius: 15px;
+	box-shadow: 0 3px #ccc;
+  }
+
 .button:hover {
 	background-color: #B1A8B9;
 }
@@ -53,4 +69,13 @@ html, body{
   background-color: #B1A8B9;
   box-shadow: 0 1px #ccc;
   transform: translateY(4px);
+}
+
+ul{
+	padding: 0;
+}
+
+li{
+	list-style: none;
+	padding: 0;
 }
