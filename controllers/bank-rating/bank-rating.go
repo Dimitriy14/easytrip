@@ -30,15 +30,21 @@ func (this *RatesController) Get() {
 		Option:   this.GetString("option"),
 		Bank:     this.GetStrings("bank"),
 	}
+<<<<<<< HEAD
 	if r.Currency == nil {
 		this.Data["IncorrectCurrency"] = true
 		this.TplName = "index.tpl"
 		return
 	} else if r.Bank == nil {
+=======
+	if r.Currency == nil || r.Bank == nil {
+		this.Data["IncorrectCurrency"] = true
+>>>>>>> 4904854864bca6b74994a764e99729e88737ff30
 		this.Data["IncorrectBank"] = true
 		this.TplName = "index.tpl"
 		return
 	}
+
 	b, err := this.RatesService.GetBankRates(r)
 	if err != nil {
 		beego.Error("Error:%v", err)
