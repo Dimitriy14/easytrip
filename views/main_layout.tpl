@@ -7,7 +7,6 @@
     {{.HtmlHead}}
 </head>
 <body>
-
     <div class="container">
         {{.LayoutContent}}
     </div>

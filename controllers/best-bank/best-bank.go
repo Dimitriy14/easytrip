@@ -2,6 +2,7 @@ package bestBankController
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/oreuta/easytrip/controllers/baseController"
 	"github.com/oreuta/easytrip/models"
 	"github.com/oreuta/easytrip/services/best-bank"
 )
@@ -9,6 +10,7 @@ import (
 type bestBankController struct {
 	beego.Controller
 	BestService bestBankService.BestBankServiceInterface
+	baseController.BaseController
 }
 
 func New(s bestBankService.BestBankServiceInterface) *bestBankController {
@@ -50,9 +52,24 @@ func (r *bestBankController) Get() {
 	r.Data["Sale"] = sale
 	r.Data["TitleSale"] = ""
 	if buy != nil {
-		r.Data["TitleBuy"] = "Best Buy"
+		r.Data["TitleBuy"] = "Best_Buy"
 	}
 	if sale != nil {
-		r.Data["TitleSale"] = "Best Sale"
+		r.Data["TitleSale"] = "Best_Sale"
 	}
+
+	translate := baseController.New()
+	lang := r.GetString("lang")
+
+	if lang != "" {
+		translate.Lang = lang
+		r.Ctx.SetCookie("lang", translate.Lang)
+	} else {
+		translate.Lang = r.Ctx.GetCookie("lang")
+		if translate.Lang == "" {
+			translate.Lang = "en-US"
+		}
+	}
+	translate.Path = "conf/locale_" + translate.Lang + ".ini"
+	r.Data["i18n"] = translate.Trans
 }

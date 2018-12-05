@@ -2,6 +2,7 @@ package bankRatingController
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/oreuta/easytrip/controllers/baseController"
 	"github.com/oreuta/easytrip/models"
 	"github.com/oreuta/easytrip/services/bank-rating"
 )
@@ -10,6 +11,7 @@ import (
 type RatesController struct {
 	beego.Controller
 	RatesService bankRatingService.RatesServiceInterface
+	baseController.BaseController
 }
 
 //New create a new RatesController
@@ -37,4 +39,19 @@ func (this *RatesController) Get() {
 	this.Data["Banks"] = b
 	this.Layout = "comparision_layout.tpl"
 	this.TplName = "comparision.tpl"
+
+	translate := baseController.New()
+	lang := this.GetString("lang")
+
+	if lang != "" {
+		translate.Lang = lang
+		this.Ctx.SetCookie("lang", translate.Lang)
+	} else {
+		translate.Lang = this.Ctx.GetCookie("lang")
+		if translate.Lang == "" {
+			translate.Lang = "en-US"
+		}
+	}
+	translate.Path = "conf/locale_" + translate.Lang + ".ini"
+	this.Data["i18n"] = translate.Trans
 }
