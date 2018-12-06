@@ -47,21 +47,21 @@ func (this *RatesController) Get() {
 		Bank:     this.GetStrings("bank"),
 	}
 
-	{
-		i := 0
-		if r.Currency == nil {
-			this.Data["warningCurrency"] = "*Select Currency"
-			i++
-		}
-		if r.Bank == nil {
-			this.Data["warningBank"] = "*Select Bank"
-			i++
-		}
-		if i > 0 {
-			this.TplName = "index.tpl"
-			this.Data["isWarnMess"] = true
-			return
-		}
+	if r.Currency == nil {
+		this.Data["warningCurrency"] = "*Select Currency"
+		this.Data["isWarnCurr"] = true
+	} else {
+		this.Data["isWarnCurr"] = false
+	}
+	if r.Bank == nil {
+		this.Data["warningBank"] = "*Select Bank"
+		this.Data["isWarnBank"] = true
+	} else {
+		this.Data["isWarnBank"] = false
+	}
+	if r.Currency == nil || r.Bank == nil {
+		this.TplName = "index.tpl"
+		return
 	}
 
 	b, err := this.RatesService.GetBankRates(r)

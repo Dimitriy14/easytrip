@@ -27,7 +27,7 @@
           <div id="currency">
             <h2>{{call .i18n "Choose_your_currency"}}</h2>
             <div class="warning">
-              <p>{{if .isWarnMess}} {{call .i18n .warningCurrency}}{{end}}</p>
+              <p>{{if .isWarnCurr}} {{call .i18n .warningCurrency}}{{end}}</p>
             </div>
             <p><label><input onClick="setAllCheckboxes('currency', this);" type="checkbox" />{{call .i18n "Select_All"}}</label></p>
             <p><label><input type="checkbox" name="currency" value="usd">USD</label></p>
@@ -42,7 +42,7 @@
           <div id="banks">
             <h2>{{call .i18n "Choose_your_banks"}}</h2>
             <div class="warning">
-              <p>{{if .isWarnMess}} {{call .i18n .warningBank}}{{end}}</p>
+              <p>{{if .isWarnBank}} {{call .i18n .warningBank}}{{end}}</p>
             </div>
             <p><label><input onClick="setAllCheckboxes('banks', this);" type="checkbox" />{{call .i18n "Select_All"}}</label></p>
             <p><label><input type="checkbox" name="bank" value="privat">{{call .i18n "Privat_Bank"}}</label></p>

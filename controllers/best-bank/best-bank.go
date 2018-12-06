@@ -42,21 +42,21 @@ func (r *bestBankController) Get() {
 		Bank:     r.GetStrings("bank"),
 	}
 
-	{
-		i := 0
-		if inpData.Currency == nil {
-			r.Data["warningCurrency"] = "*Select Currency"
-			i++
-		}
-		if inpData.Bank == nil {
-			r.Data["warningBank"] = "*Select Bank"
-			i++
-		}
-		if i > 0 {
-			r.TplName = "index.tpl"
-			r.Data["isWarnMess"] = true
-			return
-		}
+	if inpData.Currency == nil {
+		r.Data["warningCurrency"] = "*Select Currency"
+		r.Data["isWarnCurr"] = true
+	} else {
+		r.Data["isWarnCurr"] = false
+	}
+	if inpData.Bank == nil {
+		r.Data["warningBank"] = "*Select Bank"
+		r.Data["isWarnBank"] = true
+	} else {
+		r.Data["isWarnBank"] = false
+	}
+	if inpData.Currency == nil || inpData.Bank == nil {
+		r.TplName = "index.tpl"
+		return
 	}
 
 	sale, buy, err := r.BestService.GetBestBanks(inpData)
