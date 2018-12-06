@@ -10,6 +10,12 @@
 <body>
     <div class="mycontainer">
       <div class="form-window">
+      <form action="/" name=l method="GET">
+        <h2>{{call .i18n "Choose_language"}}</h2>
+          <p><label><input type="radio" name="lang" value="en-US">{{call .i18n "English"}}</label></p>
+          <p><label><input type="radio" name="lang" value="ru-RU">{{call .i18n "Russian"}}</label></p>
+          <input class="button" type="submit" onclick="l.action='/';" value="{{call .i18n "Submit_lang"}}">
+      </form>
         <form action = "/best" name=f1 method = "GET">
           <h2>{{call .i18n "Choose_your_currency"}}</h2>
           <div class="warning">
