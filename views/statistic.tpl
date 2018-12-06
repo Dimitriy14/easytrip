@@ -7,7 +7,7 @@
     <link href="/static/css/main.css" rel="stylesheet">
 </head>
 <body>
-<h2 class = "stathead">Statistic</h2>
+<h2 class = "stathead">{{call .i18n "Get_statistics"}}</h2>
     <div class="block-container">
         {{range $_, $val := .Stat}}
             <div class = "form-window">
@@ -19,6 +19,6 @@
             </div>  
         {{end}}
     </div> 
-    <div class="button-center"><a href="/" class="back">Back</a></div>
+    <div class="button-center"><a href="/" class="back">{{call .i18n "Back"}}</a></div>
 </body>
 </html>

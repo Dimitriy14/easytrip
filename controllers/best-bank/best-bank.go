@@ -7,6 +7,7 @@ import (
 	"github.com/astaxie/beego/toolbox"
 	"github.com/oreuta/easytrip/models"
 	"github.com/oreuta/easytrip/services/best-bank"
+	"github.com/oreuta/easytrip/translate"
 )
 
 type bestBankController struct {
@@ -19,6 +20,21 @@ func New(s bestBankService.BestBankServiceInterface) *bestBankController {
 }
 
 func (r *bestBankController) Get() {
+
+	translate := translate.New()
+	lang := r.GetString("lang")
+	if lang != "" {
+		translate.Lang = lang
+		r.Ctx.SetCookie("lang", translate.Lang)
+	} else {
+		translate.Lang = r.Ctx.GetCookie("lang")
+		if translate.Lang == "" {
+			translate.Lang = "en-US"
+		}
+	}
+	translate.Path = "conf/locale_" + translate.Lang + ".ini"
+	r.Data["i18n"] = translate.Tr
+
 	toolbox.StatisticsMap.AddStatistics("GET", "/best", "&controllers.bestBankController.bestBankController", time.Duration(15000))
 	inpData := models.MainRequest{
 		Currency: r.GetStrings("currency"),
@@ -38,6 +54,7 @@ func (r *bestBankController) Get() {
 		}
 		if i > 0 {
 			r.TplName = "index.tpl"
+			r.Data["isWarnMess"] = true
 			return
 		}
 	}

@@ -7,6 +7,7 @@ import (
 	"github.com/astaxie/beego/toolbox"
 	"github.com/oreuta/easytrip/models"
 	"github.com/oreuta/easytrip/services/bank-rating"
+	"github.com/oreuta/easytrip/translate"
 )
 
 //RatesController is a controller for comparing page
@@ -24,17 +25,43 @@ func New(service bankRatingService.RatesServiceInterface) *RatesController {
 
 //Get function gets request gives and output data on display
 func (this *RatesController) Get() {
+
+	translate := translate.New()
+	lang := this.GetString("lang")
+	if lang != "" {
+		translate.Lang = lang
+		this.Ctx.SetCookie("lang", translate.Lang)
+	} else {
+		translate.Lang = this.Ctx.GetCookie("lang")
+		if translate.Lang == "" {
+			translate.Lang = "en-US"
+		}
+	}
+	translate.Path = "conf/locale_" + translate.Lang + ".ini"
+	this.Data["i18n"] = translate.Tr
+
 	toolbox.StatisticsMap.AddStatistics("GET", "/comparision", "&controllers.bankRatingController.RatesController", time.Duration(13000))
 	r := models.MainRequest{
 		Currency: this.GetStrings("currency"),
 		Option:   this.GetString("option"),
 		Bank:     this.GetStrings("bank"),
 	}
-	if r.Currency == nil || r.Bank == nil {
-		this.Data["IncorrectCurrency"] = true
-		this.Data["IncorrectBank"] = true
-		this.TplName = "index.tpl"
-		return
+
+	{
+		i := 0
+		if r.Currency == nil {
+			this.Data["warningCurrency"] = "*Select Currency"
+			i++
+		}
+		if r.Bank == nil {
+			this.Data["warningBank"] = "*Select Bank"
+			i++
+		}
+		if i > 0 {
+			this.TplName = "index.tpl"
+			this.Data["isWarnMess"] = true
+			return
+		}
 	}
 
 	b, err := this.RatesService.GetBankRates(r)
@@ -44,7 +71,6 @@ func (this *RatesController) Get() {
 	}
 
 	this.Data["Banks"] = b
-
 	this.Layout = "comparision_layout.tpl"
 	this.TplName = "comparision.tpl"
 }

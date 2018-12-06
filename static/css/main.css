@@ -6,22 +6,27 @@ html, body{
   background: linear-gradient(to right, #242424, #27045F) no-repeat;
   font-family: Arial, sans-serif;
   font-size: 18px;
-}
+  justify-content: center;
+  align-items: center;
+  display: flex;
+ }
 
 .mycontainer{
-	display: flex;
+	/*display: flex;*/
 	justify-content: center;
-	align-items: center;
+  align-items: center;
+  /*border: 5px solid #ccc; */
 }
 
+
+
 .form-window{
-	width: 920px;
-	border: 5px solid #ccc; 
+	width: 320px;
 	padding: 10px;
 	border-radius: 10px;
 	color: #ccc;
   display: flex;
-  justify-content: center;
+  /*justify-content: center;*/
   margin: 5px;
 }
 
@@ -61,30 +66,8 @@ html, body{
   transform: translateY(4px);
 }
 
-.error{
-  background-color: #f00;
-  color: #fff;
-  display: inline;
-  padding: 10px;
-  font-weight: 700;
-  position: relative;
-  text-transform: uppercase;
-  border-radius: 15px;
-  float: right;
-  z-index: 999;
-}
-
-.error:before{
-  content: "";
-  display: block;
-  position: absolute;
-  left: -15px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 19px 25px 19px 0;
-  border-color: transparent #f11 transparent transparent;
-  top: 1px;
+.warning{
+  color: red
 }
 
 .back {
@@ -115,6 +98,11 @@ html, body{
 
 .button-center{
   text-align: center;
+  width: 300px;
+}
+.button-select{
+  text-align: center;
+  width: 200px;
 }
   
 
