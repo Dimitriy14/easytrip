@@ -1,7 +1,7 @@
+
 html, body{
   padding: 0;
   margin: 0;
-  height: 100%;
   width: 100%;
   background: linear-gradient(to right, #242424, #27045F) no-repeat;
   font-family: Arial, sans-serif;
@@ -10,23 +10,23 @@ html, body{
   align-items: center;
   display: flex;
  }
+ 
+
 
 .mycontainer{
-	/*display: flex;*/
-	justify-content: center;
+  border: 5px solid #ccc; 
+  border-radius: 10px;
   align-items: center;
-  /*border: 5px solid #ccc; */
+  width: 340px;
 }
 
 
 
 .form-window{
 	width: 320px;
-	padding: 10px;
-	border-radius: 10px;
+  padding: 10px;
 	color: #ccc;
   display: flex;
-  /*justify-content: center;*/
   margin: 5px;
 }
 
@@ -34,6 +34,7 @@ html, body{
   text-align: center;
   display: flex;
 }
+
 
 .stathead{
   text-align: center;
@@ -110,3 +111,4 @@ li{
 	list-style: none;
 	padding: 0;
 }
+

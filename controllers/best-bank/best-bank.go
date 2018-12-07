@@ -71,9 +71,9 @@ func (r *bestBankController) Get() {
 	r.Data["Sale"] = sale
 	r.Data["TitleSale"] = ""
 	if buy != nil {
-		r.Data["TitleBuy"] = "Best Buy"
+		r.Data["TitleBuy"] = "Best_Buy"
 	}
 	if sale != nil {
-		r.Data["TitleSale"] = "Best Sale"
+		r.Data["TitleSale"] = "Best_Sale"
 	}
 }
