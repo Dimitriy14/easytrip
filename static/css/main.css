@@ -1,27 +1,47 @@
+
 html, body{
   padding: 0;
   margin: 0;
+<<<<<<< HEAD
   height: 100%;
+=======
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
   width: 100%;
   background: linear-gradient(to right, #242424, #27045F) no-repeat;
   font-family: Arial, sans-serif;
   font-size: 18px;
-}
+  justify-content: center;
+  align-items: center;
+  display: flex;
+ }
+ 
 
+<<<<<<< HEAD
 .mycontainer{
 	display: flex;
 	justify-content: center;
 	align-items: center;
+=======
+
+.mycontainer{
+  border: 5px solid #ccc; 
+  border-radius: 10px;
+  align-items: center;
+  width: 340px;
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 }
 
+
+
 .form-window{
-	width: 920px;
-	border: 5px solid #ccc; 
-	padding: 10px;
-	border-radius: 10px;
+	width: 320px;
+  padding: 10px;
 	color: #ccc;
   display: flex;
+<<<<<<< HEAD
   justify-content: center;
+=======
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
   margin: 5px;
 }
 
@@ -30,6 +50,10 @@ html, body{
   display: flex;
 }
 
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 .stathead{
   text-align: center;
   color: #ccc;
@@ -61,6 +85,7 @@ html, body{
   transform: translateY(4px);
 }
 
+<<<<<<< HEAD
 .error{
   background-color: #f00;
   color: #fff;
@@ -85,6 +110,10 @@ html, body{
   border-width: 19px 25px 19px 0;
   border-color: transparent #f11 transparent transparent;
   top: 1px;
+=======
+.warning{
+  color: red
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 }
 
 .back {
@@ -115,10 +144,23 @@ html, body{
 
 .button-center{
   text-align: center;
+<<<<<<< HEAD
+=======
+  width: 300px;
+}
+.button-select{
+  text-align: center;
+  width: 200px;
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 }
   
 
 li{
 	list-style: none;
 	padding: 0;
+<<<<<<< HEAD
 }
+=======
+}
+
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9

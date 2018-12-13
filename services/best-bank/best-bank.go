@@ -15,6 +15,10 @@ var nameOfBanks = map[string]string{
 	"privat": "ПриватБанк",
 	"pireus": "Піреус Банк",
 	"otp":    "ОТП Банк",
+<<<<<<< HEAD
+=======
+	"kredo":  "Кредобанк",
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 }
 
 var nameOfCurrency = map[string]string{
