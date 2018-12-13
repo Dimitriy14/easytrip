@@ -20,8 +20,6 @@ func New(s bestBankService.BestBankServiceInterface) *bestBankController {
 }
 
 func (r *bestBankController) Get() {
-<<<<<<< HEAD
-=======
 
 	translate := translate.New()
 	lang := r.GetString("lang")
@@ -37,7 +35,6 @@ func (r *bestBankController) Get() {
 	translate.Path = "conf/locale_" + translate.Lang + ".ini"
 	r.Data["i18n"] = translate.Tr
 
->>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 	toolbox.StatisticsMap.AddStatistics("GET", "/best", "&controllers.bestBankController.bestBankController", time.Duration(15000))
 	inpData := models.MainRequest{
 		Currency: r.GetStrings("currency"),
