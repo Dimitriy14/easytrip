@@ -5,6 +5,11 @@ import (
 	"testing"
 )
 
-func TestRoute(t *testing.T) {
-
+func TestController(t *testing.T) {
+	tests := []struct {
+		description        string
+		url                string
+		expectedStatusCode int
+		expectedBody       string
+	}
 }

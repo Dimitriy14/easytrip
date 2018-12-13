@@ -17,3 +17,16 @@ func (m BankUAClientMock) Get() (body []byte, err error) {
 func (m BankUAClientMock) GetCurrBank() (unpacked []models.CurrencyBank, err error) {
 	return m.Unpacked, m.Err
 }
+
+//----------------------------------------
+//Rates Service Mock
+//----------------------------------------
+
+type RatesServiceMock struct {
+	Banks []models.CurrencyBank
+	Err   error
+}
+
+func (m RatesServiceMock) GetBankRates(r models.MainRequest) (banks []models.CurrencyBank, err error) {
+	return m.Banks, m.Err
+}
