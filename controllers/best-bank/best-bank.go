@@ -1,9 +1,13 @@
 package bestBankController
 
 import (
+	"time"
+
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/toolbox"
 	"github.com/oreuta/easytrip/models"
 	"github.com/oreuta/easytrip/services/best-bank"
+	"github.com/oreuta/easytrip/translate"
 )
 
 type bestBankController struct {
@@ -16,12 +20,29 @@ func New(s bestBankService.BestBankServiceInterface) *bestBankController {
 }
 
 func (r *bestBankController) Get() {
+
+	translate := translate.New()
+	lang := r.GetString("lang")
+	if lang != "" {
+		translate.Lang = lang
+		r.Ctx.SetCookie("lang", translate.Lang)
+	} else {
+		translate.Lang = r.Ctx.GetCookie("lang")
+		if translate.Lang == "" {
+			translate.Lang = "en-US"
+		}
+	}
+	translate.Path = "conf/locale_" + translate.Lang + ".ini"
+	r.Data["i18n"] = translate.Tr
+
+	toolbox.StatisticsMap.AddStatistics("GET", "/best", "&controllers.bestBankController.bestBankController", time.Duration(15000))
 	inpData := models.MainRequest{
 		Currency: r.GetStrings("currency"),
 		Option:   r.GetString("option"),
 		Bank:     r.GetStrings("bank"),
 	}
 
+<<<<<<< HEAD
 	{
 		i := 0
 		if inpData.Currency == nil {
@@ -43,6 +64,30 @@ func (r *bestBankController) Get() {
 		beego.Error("GetBestBanks func in BestService: %v", err)
 		return
 	}
+=======
+	if inpData.Currency == nil {
+		r.Data["warningCurrency"] = "*Select Currency"
+		r.Data["isWarnCurr"] = true
+	} else {
+		r.Data["isWarnCurr"] = false
+	}
+	if inpData.Bank == nil {
+		r.Data["warningBank"] = "*Select Bank"
+		r.Data["isWarnBank"] = true
+	} else {
+		r.Data["isWarnBank"] = false
+	}
+	if inpData.Currency == nil || inpData.Bank == nil {
+		r.TplName = "index.tpl"
+		return
+	}
+
+	sale, buy, err := r.BestService.GetBestBanks(inpData)
+	if err != nil {
+		beego.Error("GetBestBanks func in BestService: %v", err)
+		return
+	}
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 	r.Layout = "bestBank_layout.tpl"
 	r.TplName = "bestBank.tpl"
 	r.Data["Buy"] = buy
@@ -50,9 +95,16 @@ func (r *bestBankController) Get() {
 	r.Data["Sale"] = sale
 	r.Data["TitleSale"] = ""
 	if buy != nil {
+<<<<<<< HEAD
 		r.Data["TitleBuy"] = "Best Buy"
 	}
 	if sale != nil {
 		r.Data["TitleSale"] = "Best Sale"
+=======
+		r.Data["TitleBuy"] = "Best_Buy"
+	}
+	if sale != nil {
+		r.Data["TitleSale"] = "Best_Sale"
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 	}
 }

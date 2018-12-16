@@ -1,10 +1,11 @@
 package bestBankService
 
 import (
-	"encoding/json"
 	"fmt"
 	"sort"
 	"strings"
+
+	"github.com/oreuta/easytrip/sql1"
 
 	"github.com/oreuta/easytrip/clients"
 	"github.com/oreuta/easytrip/models"
@@ -14,6 +15,10 @@ var nameOfBanks = map[string]string{
 	"privat": "ПриватБанк",
 	"pireus": "Піреус Банк",
 	"otp":    "ОТП Банк",
+<<<<<<< HEAD
+=======
+	"kredo":  "Кредобанк",
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 }
 
 var nameOfCurrency = map[string]string{
@@ -42,6 +47,7 @@ func New(newClient clients.BankUAClient) BestBankServiceInterface {
 }
 
 func (b BestBankService) GetBestBanks(data models.MainRequest) (bBSale, bBBuy []models.CurrencyBank, err error) {
+<<<<<<< HEAD
 	jsn, err := b.Client.Get()
 	if err != nil {
 		return nil, nil, fmt.Errorf("Method Get in Client BankUACient: %v", err)
@@ -50,15 +56,31 @@ func (b BestBankService) GetBestBanks(data models.MainRequest) (bBSale, bBBuy []
 	err = json.Unmarshal(jsn, &banks)
 	if err != nil {
 		return nil, nil, fmt.Errorf("json.Unmarshal %v:", err)
+=======
+	banks, err := b.Client.GetCurrBank()
+	if err != nil {
+		fmt.Errorf("Method Get in Client BankUACient: %v", err)
+		banks, _ := sql1.JsnChanger(sql1.Db)
+		_ = banks
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 	}
+
 	banks = FilterCurrency(data, FilterBank(data, banks))
+<<<<<<< HEAD
+=======
+
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 	if data.Option != nameOfOption["buy"] {
 		bBSale = BestSale(banks)
 	}
 	if data.Option != nameOfOption["sale"] {
 		bBBuy = BestBuy(banks)
 	}
+<<<<<<< HEAD
 	return bBSale, bBBuy, nil
+=======
+	return bBSale, bBBuy, err
+>>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 }
 
 func FilterBank(data models.MainRequest, inpBanks []models.CurrencyBank) (OutpBanks []models.CurrencyBank) {
