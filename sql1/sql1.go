@@ -3,6 +3,7 @@ package sql1
 import (
 	"database/sql"
 	"fmt"
+	"log"
 	"time"
 
 	"github.com/oreuta/easytrip/clients"
@@ -12,8 +13,16 @@ import (
 var Db *sql.DB
 
 func init() {
-	Db = CreateConnect("root:1234@tcp(localhost:3306)/test")
-	_ = Db
+	var err error
+	Db, err = sql.Open("mysql", "bbdc4d9aa08941:ca3c3019@tcp(us-cdbr-iron-east-01.cleardb.net:3306)/heroku_d1f744b3705e71b")
+	if err != nil {
+		fmt.Errorf("Connection open error: %v", err)
+	}
+
+	if err = Db.Ping(); err != nil {
+		log.Fatal(err)
+	}
+
 }
 
 //CreateConnect open connection to MySQL database
@@ -27,7 +36,7 @@ func CreateConnect(connection string) (Db *sql.DB) {
 }
 
 //Update updates information from BankUAclient to database
-func Update(Db *sql.DB) error {
+func Update() error {
 	a := clients.New()
 	var err error
 	var res []models.CurrencyBank
@@ -49,7 +58,7 @@ func Update(Db *sql.DB) error {
 }
 
 //JsnChanger creates list of banks from database
-func JsnChanger(Db *sql.DB) (res []models.CurrencyBank, err error) {
+func JsnChanger() (res []models.CurrencyBank, err error) {
 	rows, err := Db.Query("select * from BanksList")
 	if err != nil {
 		return nil, fmt.Errorf("Select query failed:%v", err)
@@ -63,4 +72,29 @@ func JsnChanger(Db *sql.DB) (res []models.CurrencyBank, err error) {
 		res = append(res, a)
 	}
 	return
+}
+
+func CheckUser(data models.User) bool {
+	rows, err := Db.Query("SELECT * FROM users where login=? and pass=?", data.Login, data.Password)
+	if err != nil {
+		return false
+	}
+	defer rows.Close()
+	var a, b string
+	err = rows.Scan(&a, &b)
+	if err != nil {
+		return false
+	}
+	if a == "" && b == "" {
+		return false
+	}
+	return true
+}
+
+func InsertInto(data models.User) (res bool) {
+	_, err := Db.Exec("insert into users values(?,?,?)", data.Name, data.Login, data.Password)
+	if err != nil {
+		return false
+	}
+	return true
 }
