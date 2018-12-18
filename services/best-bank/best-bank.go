@@ -47,7 +47,7 @@ func (b BestBankService) GetBestBanks(data models.MainRequest) (bBSale, bBBuy []
 	banks, err := b.Client.GetCurrBank()
 	if err != nil {
 		fmt.Errorf("Method Get in Client BankUACient: %v", err)
-		banks, _ := sql1.JsnChanger(sql1.Db)
+		banks, _ := sql1.JsnChanger()
 		_ = banks
 	}
 

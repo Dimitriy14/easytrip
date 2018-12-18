@@ -22,7 +22,7 @@ func init() {
 	if err = Db.Ping(); err != nil {
 		log.Fatal(err)
 	}
-
+	go Update()
 }
 
 //CreateConnect open connection to MySQL database
