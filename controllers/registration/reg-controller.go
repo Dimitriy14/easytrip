@@ -35,7 +35,7 @@ func (this *RegController) Post() {
 	}
 
 	reg := registration.New()
-	if !reg.CanRegistr(&u) {
+	if reg.CanRegistr(&u) {
 		this.Data["Errors"] = "Error"
 		return
 	}
