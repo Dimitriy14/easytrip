@@ -2,7 +2,7 @@ package regController
 
 import (
 	"github.com/astaxie/beego"
-
+	"github.com/astaxie/beego/validation"
 	"github.com/oreuta/easytrip/models"
 	"github.com/oreuta/easytrip/services/registration"
 )
@@ -25,12 +25,23 @@ func (this *RegController) Post() {
 		Password: this.GetString("password"),
 	}
 
-	this.Data["User"] = u
-	// if !registration.CanRegistr(u){
+	valid := validation.Validation{}
+	b, err := valid.Valid(&u)
+	if err != nil {
+		beego.Error("ValidationError: %v", err)
+	}
+	if !b {
+		this.Data["Errors"] = valid.ErrorsMap
+		return
+	}
 
-	// }
+	reg := registration.New()
+	if !reg.CanRegistr(&u) {
+		this.Data["Errors"] = "Error"
+		return
+	}
 
-	//this.Redirect("/signin", 303)
+	this.Redirect("/login", 303)
 
 }
 
