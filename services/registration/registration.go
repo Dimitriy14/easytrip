@@ -17,12 +17,12 @@ func (a *RegServiceStruct) CanRegistr(data models.User) (res bool) {
 	return
 }
 
-func (a *RegServiceStruct) CanLogIN(data models.User) (username string, res bool) {
-	res = sql1.CheckUser(data)
-	if res {
-		username = data.Name
+func (a *RegServiceStruct) CanLogIN(data models.User) (username string, ok bool) {
+	username, ok = sql1.CheckUser(data)
+	if ok {
+		return
 	}
-	return
+	return "", false
 }
 
 func New() RegService {

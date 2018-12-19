@@ -64,18 +64,19 @@ func JsnChanger() (res []models.CurrencyBank, err error) {
 	return
 }
 
-func CheckUser(data models.User) bool {
-	rows, err := db.Query("SELECT count(Id) FROM users where users.login=? and users.pass=?", data.Login, data.Password)
+func CheckUser(data models.User) (name string, ok bool) {
+	rows, err := db.Query("SELECT count(Id),users.name FROM users where users.login=? and users.pass=?", data.Login, data.Password)
 	if err != nil {
-		return false
+		return "", false
 	}
 	defer rows.Close()
 	var a int
-	err = rows.Scan(&a)
+	err = rows.Scan(&a, &name)
 	if err != nil || a != 1 {
-		return false
+		return "", false
 	}
-	return true
+	return name, true
+
 }
 
 func InsertInto(data models.User) (res bool) {
