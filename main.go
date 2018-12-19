@@ -4,8 +4,10 @@ import (
 	"os"
 	"strconv"
 
+	"github.com/oreuta/easytrip/sql1"
+
 	"github.com/astaxie/beego"
-	_ "github.com/go-sql-driver/mysql"
+	_ "github.com/oreuta/easytrip/clients"
 	_ "github.com/oreuta/easytrip/routers"
 )
 
@@ -20,6 +22,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-
+	go sql1.Update()
 	beego.Run()
 }

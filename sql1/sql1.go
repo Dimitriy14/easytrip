@@ -6,6 +6,7 @@ import (
 	"time"
 
 	"github.com/astaxie/beego/logs"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/oreuta/easytrip/clients"
 	"github.com/oreuta/easytrip/models"
 )
@@ -13,39 +14,35 @@ import (
 var db *sql.DB
 
 func init() {
-	db, err := sql.Open("mysql", "bbdc4d9aa08941:ca3c3019@tcp(us-cdbr-iron-east-01.cleardb.net:3306)/heroku_d1f744b3705e71b")
+	var err error
+	db, err = sql.Open("mysql", "bbdc4d9aa08941:ca3c3019@tcp(us-cdbr-iron-east-01.cleardb.net:3306)/heroku_d1f744b3705e71b")
 	if err != nil {
-		fmt.Errorf("Connection open error: %v", err)
+		logs.Info("Connection open error: %v", err)
 	}
 	if err = db.Ping(); err != nil {
-		fmt.Errorf("Ping failed", err)
+		logs.Info("Ping failed  %v", err)
 	}
-	defer db.Close()
-	//go Update()
 }
 
-// func checkConnect()(db *sql.DB){
-// 	if
-// }
-
 //Update updates information from BankUAclient to database
-func Update() error {
+func Update() {
 	a := clients.New()
 	var err error
 	var res []models.CurrencyBank
-	res, err = a.GetCurrBank()
-	if err != nil {
-		fmt.Printf("err fo update sql is : %v", err)
-	}
 	for {
-		for i := range res {
-			_, err := db.Query("update BanksList set RateBuy=? RateSale=? where BankName=? and CodeAlpha=?", res[i].RateBuy, res[i].RateSale, res[i].BankName, res[i].CodeAlpha)
-			if err != nil {
-				return fmt.Errorf("Number[%v] cant update to database: %v", res[i], err)
+		res, err = a.GetCurrBank()
+		if err != nil {
+			logs.Info("err fo update sql is : %v", err)
+		}
 
+		for i := range res {
+			result, err := db.Exec("update bankslist set RateBuy=?, RateSale=? where BankName=? and CodeAlpha=?", res[i].RateBuy, res[i].RateSale, res[i].BankName, res[i].CodeAlpha)
+			if err != nil && result == nil {
+				logs.Info("Number[%v] cant update to database: %v", res[i], err)
 			}
 		}
-		time.Sleep(10 * time.Second)
+		logs.Info("Update DataBase Succesful!")
+		time.Sleep(12 * time.Hour)
 	}
 
 }
@@ -82,15 +79,6 @@ func CheckUser(data models.User) bool {
 }
 
 func InsertInto(data models.User) (res bool) {
-
-	db, err := sql.Open("mysql", "bbdc4d9aa08941:ca3c3019@tcp(us-cdbr-iron-east-01.cleardb.net:3306)/heroku_d1f744b3705e71b")
-	if err != nil {
-		fmt.Errorf("Connection open error: %v", err)
-	}
-	if err = db.Ping(); err != nil {
-		fmt.Errorf("Ping failed", err)
-	}
-	defer db.Close()
 
 	result, err := db.Exec("insert into users(name, login, pass) values(?,?,?)", data.Name, data.Login, data.Password)
 	if err != nil {
