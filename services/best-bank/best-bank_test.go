@@ -40,7 +40,7 @@ func TestGetBestBanks(t *testing.T) {
 		{
 			BankName:  "ПриватБанк",
 			CodeAlpha: "USD",
-			RateBuy:   66.6,
+			RateBuy:   66.6,1
 		},
 	}
 

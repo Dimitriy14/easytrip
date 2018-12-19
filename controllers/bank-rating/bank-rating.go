@@ -6,11 +6,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/toolbox"
 	"github.com/oreuta/easytrip/models"
-<<<<<<< HEAD
-=======
-	"github.com/oreuta/easytrip/services/bank-rating"
 	"github.com/oreuta/easytrip/translate"
->>>>>>> 6e627ef8d2ec6bdf8aa5a102215e4b86d314f2a9
 )
 
 //RatesController is a controller for comparing page
@@ -28,6 +24,12 @@ func New(service bankRatingService.RatesServiceInterface) *RatesController {
 
 //Get function gets request gives and output data on display
 func (this *RatesController) Get() {
+
+	// Active session required
+	sess := this.GetSession("easytrip")
+	if sess == nil {
+		this.Abort("404")
+	}
 
 	translate := translate.New()
 	lang := this.GetString("lang")
@@ -76,4 +78,5 @@ func (this *RatesController) Get() {
 	this.Data["Banks"] = b
 	this.Layout = "comparision_layout.tpl"
 	this.TplName = "comparision.tpl"
+	this.Redirect("/", 200)
 }
