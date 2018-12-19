@@ -59,7 +59,7 @@ func Update() error {
 
 //JsnChanger creates list of banks from database
 func JsnChanger() (res []models.CurrencyBank, err error) {
-	rows, err := Db.Query("select * from BanksList")
+	rows, err := Db.Query("select * from bankslist")
 	if err != nil {
 		return nil, fmt.Errorf("Select query failed:%v", err)
 	}
@@ -75,7 +75,7 @@ func JsnChanger() (res []models.CurrencyBank, err error) {
 }
 
 func CheckUser(data models.User) bool {
-	rows, err := Db.Query("SELECT count(Id) FROM users where login=? and pass=?", data.Login, data.Password)
+	rows, err := Db.Query("SELECT count(Id) FROM users where users.login=? and users.pass=?", data.Login, data.Password)
 	if err != nil {
 		return false
 	}

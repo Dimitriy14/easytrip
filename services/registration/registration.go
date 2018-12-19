@@ -12,12 +12,12 @@ type RegService interface {
 
 type RegServiceStruct struct{}
 
-func (a RegServiceStruct) CanRegistr(data models.User) (res bool) {
+func (a *RegServiceStruct) CanRegistr(data models.User) (res bool) {
 	res = sql1.InsertInto(data)
 	return
 }
 
-func (a RegServiceStruct) CanLogIN(data models.User) (username string, res bool) {
+func (a *RegServiceStruct) CanLogIN(data models.User) (username string, res bool) {
 	res = sql1.CheckUser(data)
 	if res {
 		username = data.Name

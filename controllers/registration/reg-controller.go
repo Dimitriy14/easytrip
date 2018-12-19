@@ -2,11 +2,14 @@ package regController
 
 import (
 	"github.com/astaxie/beego"
+
 	"github.com/oreuta/easytrip/models"
+	"github.com/oreuta/easytrip/services/registration"
 )
 
 type RegController struct {
 	beego.Controller
+	regist registration.RegService
 }
 
 func (this *RegController) Get() {
@@ -23,11 +26,14 @@ func (this *RegController) Post() {
 	}
 
 	this.Data["User"] = u
-
 	// if !registration.CanRegistr(u){
 
 	// }
 
 	//this.Redirect("/signin", 303)
 
+}
+
+func New(reg registration.RegService) *RegController {
+	return &RegController{regist: reg}
 }
