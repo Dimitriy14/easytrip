@@ -7,7 +7,7 @@ import (
 
 type RegService interface {
 	CanRegistr(data models.User) (res bool)
-	CanLogIN(data models.User) (res bool)
+	CanLogIN(data models.User) (username string, res bool)
 }
 
 type RegServiceStruct struct{}
@@ -17,8 +17,11 @@ func (a RegServiceStruct) CanRegistr(data models.User) (res bool) {
 	return
 }
 
-func (a RegServiceStruct) CanLogIN(data models.User) (res bool) {
+func (a RegServiceStruct) CanLogIN(data models.User) (username string, res bool) {
 	res = sql1.CheckUser(data)
+	if res {
+		username = data.Name
+	}
 	return
 }
 

@@ -52,7 +52,7 @@ func Update() error {
 
 			}
 		}
-		time.Sleep(3 * time.Second)
+		time.Sleep(10 * time.Second)
 	}
 
 }
@@ -75,25 +75,22 @@ func JsnChanger() (res []models.CurrencyBank, err error) {
 }
 
 func CheckUser(data models.User) bool {
-	rows, err := Db.Query("SELECT * FROM users where login=? and pass=?", data.Login, data.Password)
+	rows, err := Db.Query("SELECT count(Id) FROM users where login=? and pass=?", data.Login, data.Password)
 	if err != nil {
 		return false
 	}
 	defer rows.Close()
-	var a, b string
-	err = rows.Scan(&a, &b)
-	if err != nil {
-		return false
-	}
-	if a == "" && b == "" {
+	var a int
+	err = rows.Scan(&a)
+	if err != nil || a != 1 {
 		return false
 	}
 	return true
 }
 
 func InsertInto(data models.User) (res bool) {
-	_, err := Db.Exec("insert into users values(?,?,?)", data.Name, data.Login, data.Password)
-	if err != nil {
+	result, err := Db.Exec("insert into users(name, login, pass) values(?,?,?)", data.Name, data.Login, data.Password)
+	if err != nil || result == nil {
 		return false
 	}
 	return true
