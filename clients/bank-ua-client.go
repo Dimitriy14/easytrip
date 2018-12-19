@@ -17,7 +17,7 @@ var Bm cache.Cache
 
 func init() {
 	var err error
-	Bm, err = cache.NewCache("memory", `{"interval":1000}`)
+	Bm, err = cache.NewCache("memory", `{"interval":10}`)
 	if err != nil {
 		fmt.Printf("cache init failed: %v", err)
 	}
@@ -64,7 +64,7 @@ func (bankClient BankUAClientImpl) GetCurrBank() (unpacked []models.CurrencyBank
 	if err != nil {
 		err = fmt.Errorf("GetCurBank get() err: %v", err)
 	}
-	Bm.Put("easytrip", unpacked, 0)
+	Bm.Put("easytrip", unpacked, 10)
 	return
 }
 
