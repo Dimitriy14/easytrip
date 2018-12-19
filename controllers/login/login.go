@@ -30,6 +30,14 @@ func (this *LoginController) Post() {
 		return
 	}
 
+	// ses := make(map[string]interface{})
+
+	// ses["name"] = userName.Name
+	// ses["login"] = userName.Login
+	// ses["password"] = userName.Password
+
+	// this.SetSession("session", ses)
+
 	this.Data["Username"] = userName
 
 }
