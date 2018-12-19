@@ -29,15 +29,15 @@ func (this *LoginController) Post() {
 		return
 	}
 
-	// ses := make(map[string]interface{})
+	ses := make(map[string]interface{})
 
-	// ses["name"] = userName.Name
-	// ses["login"] = userName.Login
-	// ses["password"] = userName.Password
+	ses["name"] = userName.Name
+	ses["login"] = userName.Login
+	ses["password"] = userName.Password
 
-	// this.SetSession("session", ses)
+	this.SetSession("session", ses)
 
-	this.Data["Username"] = userName
+	this.Redirect("/", 303)
 
 }
 func New(reg registration.RegService) *LoginController {
