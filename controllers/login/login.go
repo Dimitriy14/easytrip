@@ -8,6 +8,7 @@ import (
 
 type LoginController struct {
 	beego.Controller
+	Regist registration.RegService
 }
 
 func (this *LoginController) Get() {
@@ -22,8 +23,7 @@ func (this *LoginController) Post() {
 		Password: this.GetString("password"),
 	}
 
-	reg := registration.New()
-	userName, ok := reg.CanLogIN(u)
+	userName, ok := this.Regist.CanLogIN(u)
 	if !ok {
 		this.Data["Errors"] = "Error"
 		return
@@ -31,4 +31,7 @@ func (this *LoginController) Post() {
 
 	this.Data["Username"] = userName
 
+}
+func New(reg registration.RegService) *LoginController {
+	return &LoginController{Regist: reg}
 }

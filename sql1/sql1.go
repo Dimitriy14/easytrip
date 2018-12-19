@@ -1,7 +1,9 @@
 package sql1
 
 import (
+	"crypto/md5"
 	"database/sql"
+	"encoding/hex"
 	"fmt"
 	"time"
 
@@ -64,23 +66,25 @@ func JsnChanger() (res []models.CurrencyBank, err error) {
 	return
 }
 
-func CheckUser(data models.User) (name string, ok bool) {
-	rows, err := db.Query("SELECT count(Id),users.name FROM users where users.login=? and users.pass=?", data.Login, data.Password)
-	if err != nil {
-		return "", false
+func CheckUser(data models.User) (user models.User, ok bool) {
+	//pass := getMD5Hash(data.Password)
+	rows, err := db.Query("SELECT users.name,users.login,users.pass FROM users where users.login=? and users.pass=?", data.Login, data.Password)
+	// if err != nil {
+	// 	return user, false
+	// }
+	for rows.Next() {
+		err = rows.Scan(&user.Name, &user.Login, &user.Password)
+		logs.Info(err)
+		if err != nil {
+			return user, false
+		}
+		return user, true
 	}
-	defer rows.Close()
-	var a int
-	err = rows.Scan(&a, &name)
-	if err != nil || a != 1 {
-		return "", false
-	}
-	return name, true
-
+	return
 }
 
 func InsertInto(data models.User) (res bool) {
-
+	// data.Password = getMD5Hash(data.Password)
 	result, err := db.Exec("insert into users(name, login, pass) values(?,?,?)", data.Name, data.Login, data.Password)
 	if err != nil {
 		logs.Info("db.exec(Insert) err trouble : %v", err)
@@ -91,4 +95,10 @@ func InsertInto(data models.User) (res bool) {
 		return false
 	}
 	return true
+}
+
+func getMD5Hash(text string) string {
+	hasher := md5.New()
+	hasher.Write([]byte(text))
+	return hex.EncodeToString(hasher.Sum(nil))
 }
