@@ -7,7 +7,6 @@ import (
 	"github.com/astaxie/beego"
 	_ "github.com/go-sql-driver/mysql"
 	_ "github.com/oreuta/easytrip/routers"
-	"github.com/oreuta/easytrip/sql1"
 )
 
 func main() {
@@ -21,7 +20,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	sql1.Db = sql1.CreateConnect(beego.AppConfig.String("connect"))
 
 	beego.Run()
 }
