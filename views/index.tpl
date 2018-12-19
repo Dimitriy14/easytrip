@@ -55,7 +55,11 @@
 
       </div>
       <div class="form-window">
-          <div class="button-center"><a class="button" href = "/statistics">{{call .i18n "Get_statistics"}}</a></div>
+          <div class="button-center">
+            <a class="button" href = "/statistics">{{call .i18n "Get_statistics"}}</a>
+            <a class="button" href = "/signup">Registration</a>
+            <a class="button" href = "/login">Log in</a>
+          </div>
       </div>     
     </div>
   <script src="/static/js/reload.min.js"></script>

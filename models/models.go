@@ -39,7 +39,7 @@ func Currency() map[string]string {
 // Registration
 
 type User struct {
-	Name     string
-	Login    string
-	Password string
+	Name     string `valid:"Required;Match(/^[^\d]+$/)"`
+	Login    string `valid:"Required;Match(/^\d*/)"`
+	Password string `valid:"Required;"`
 }
