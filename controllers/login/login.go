@@ -3,6 +3,7 @@ package login
 import (
 	"github.com/astaxie/beego"
 	"github.com/oreuta/easytrip/models"
+	"github.com/oreuta/easytrip/services/registration"
 )
 
 type LoginController struct {
@@ -21,6 +22,13 @@ func (this *LoginController) Post() {
 		Password: this.GetString("password"),
 	}
 
-	this.Data["User"] = u
+	reg := registration.New()
+	userName, ok := reg.CanLogIN(u)
+	if !ok {
+		this.Data["Errors"] = "Error"
+		return
+	}
+
+	this.Data["Username"] = userName
 
 }

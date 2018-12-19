@@ -5,5 +5,5 @@
     <input type = "password" name="password">
     <button type="submit">login</button>
 </form>
-
-{{.User}}
+{{.Errors}}
+{{.Username}}
