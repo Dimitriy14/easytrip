@@ -24,6 +24,7 @@ func (this *LoginController) Post() {
 
 	reg := registration.New()
 	userName, ok := reg.CanLogIN(u)
+	this.Data["Username"] = userName
 	if !ok {
 		this.Data["Errors"] = "Error"
 		return
