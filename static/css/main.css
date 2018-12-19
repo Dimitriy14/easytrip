@@ -6,9 +6,6 @@ html, body{
   background: linear-gradient(to right, #242424, #27045F) no-repeat;
   font-family: Arial, sans-serif;
   font-size: 18px;
-  justify-content: center;
-  align-items: center;
-  display: flex;
  }
  
 
@@ -20,6 +17,7 @@ html, body{
   width: 340px;
   color: #ccc;
   text-align: center;
+  margin: 0 auto;
 }
 
 
@@ -29,11 +27,13 @@ html, body{
   padding: 10px;
   display: flex;
   margin: 5px;
+  color: #ccc;
 }
 
 .block-container{
   text-align: center;
   display: flex;
+  color: #ccc;
 }
 
 
