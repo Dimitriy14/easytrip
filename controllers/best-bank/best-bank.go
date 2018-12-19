@@ -20,12 +20,6 @@ func New(s bestBankService.BestBankServiceInterface) *bestBankController {
 
 func (r *bestBankController) Get() {
 
-	// Active session required
-	sess := r.GetSession("easytrip")
-	if sess == nil {
-		r.Abort("404")
-	}
-
 	translate := translate.New()
 	lang := r.GetString("lang")
 	if lang != "" {
@@ -81,5 +75,4 @@ func (r *bestBankController) Get() {
 	if sale != nil {
 		r.Data["TitleSale"] = "Best_Sale"
 	}
-	r.Redirect("/", 200)
 }

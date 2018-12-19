@@ -25,12 +25,6 @@ func New(service bankRatingService.RatesServiceInterface) *RatesController {
 //Get function gets request gives and output data on display
 func (this *RatesController) Get() {
 
-	// Active session required
-	sess := this.GetSession("easytrip")
-	if sess == nil {
-		this.Abort("404")
-	}
-
 	translate := translate.New()
 	lang := this.GetString("lang")
 	if lang != "" {
@@ -78,5 +72,4 @@ func (this *RatesController) Get() {
 	this.Data["Banks"] = b
 	this.Layout = "comparision_layout.tpl"
 	this.TplName = "comparision.tpl"
-	this.Redirect("/", 200)
 }
