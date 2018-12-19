@@ -2,6 +2,7 @@ package regController
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/astaxie/beego/validation"
 	"github.com/oreuta/easytrip/models"
 	"github.com/oreuta/easytrip/services/registration"
@@ -34,7 +35,9 @@ func (this *RegController) Post() {
 		this.Data["Errors"] = valid.ErrorsMap
 		return
 	}
-	if !this.Regist.CanRegistr(u) {
+	a := this.Regist.CanRegistr(u)
+	if a != nil {
+		logs.Info(a)
 		this.Data["Errors"] = "Error"
 		return
 	}

@@ -66,35 +66,29 @@ func JsnChanger() (res []models.CurrencyBank, err error) {
 	return
 }
 
-func CheckUser(data models.User) (user models.User, ok bool) {
-	//pass := getMD5Hash(data.Password)
-	rows, err := db.Query("SELECT users.name,users.login,users.pass FROM users where users.login=? and users.pass=?", data.Login, data.Password)
-	// if err != nil {
-	// 	return user, false
-	// }
-	for rows.Next() {
-		err = rows.Scan(&user.Name, &user.Login, &user.Password)
-		logs.Info(err)
-		if err != nil {
-			return user, false
-		}
-		return user, true
+func CheckUser(data models.User) (user models.User, err error) {
+	data.Password = getMD5Hash(data.Password)
+	rows, err1 := db.Query("SELECT users.name,users.login,users.pass FROM users where users.login=? and users.pass=?", data.Login, data.Password)
+	if err != nil {
+		return user, fmt.Errorf("query select failed err:%v\n", err1)
 	}
-	return
+	if rows.Next() {
+		err = rows.Scan(&user.Name, &user.Login, &user.Password)
+		if err != nil {
+			return user, fmt.Errorf("scan err:%v\n", err)
+		}
+	}
+	return user, err
 }
 
-func InsertInto(data models.User) (res bool) {
-	// data.Password = getMD5Hash(data.Password)
-	result, err := db.Exec("insert into users(name, login, pass) values(?,?,?)", data.Name, data.Login, data.Password)
+func InsertInto(data models.User) (err error) {
+	data.Password = getMD5Hash(data.Password)
+	_, err = db.Exec("insert into users(name, login, pass) values(?,?,?)", data.Name, data.Login, data.Password)
 	if err != nil {
-		logs.Info("db.exec(Insert) err trouble : %v", err)
-		return false
+		return fmt.Errorf("db.exec(Insert) err trouble : %v", err)
 	}
-	if result == nil {
-		logs.Info("db.exec(Insert) result trouble: %v", result)
-		return false
-	}
-	return true
+
+	return err
 }
 
 func getMD5Hash(text string) string {
