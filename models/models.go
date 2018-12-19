@@ -40,6 +40,6 @@ func Currency() map[string]string {
 
 type User struct {
 	Name     string `valid:"Required;MinSize(3);Alpha"`
-	Login    string `valid:"Required:MinSize(3)`
-	Password string `valid:"Required;MinSize(4);"`
+	Login    string `valid:"Required:MinSize(3)"`
+	Password string `valid:"Required;MinSize(4)"`
 }

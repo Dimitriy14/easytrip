@@ -9,8 +9,8 @@
 
 <body>
     <div class="mycontainer">
+     {{if .Registred}}<div>Hi, {{.Session.name}}</div>{{end}}
       <div class="form-window">
-
       <form action="/" name=l method="GET">
         <h2>{{call .i18n "Choose_language"}}</h2>
           <p><label><input type="radio" name="lang" value="en-US">{{call .i18n "English"}}</label></p>
@@ -62,7 +62,6 @@
           </div>
       </div>     
     </div>
-    {* <div>{{.NoReg}}</div> *}
   <script src="/static/js/reload.min.js"></script>
 </body>
 </html>

@@ -18,6 +18,8 @@ html, body{
   border-radius: 10px;
   align-items: center;
   width: 340px;
+  color: #ccc;
+  text-align: center;
 }
 
 
@@ -25,7 +27,6 @@ html, body{
 .form-window{
 	width: 320px;
   padding: 10px;
-	color: #ccc;
   display: flex;
   margin: 5px;
 }

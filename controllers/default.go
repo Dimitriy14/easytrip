@@ -15,6 +15,9 @@ type MainController struct {
 func (this *MainController) Get() {
 	toolbox.StatisticsMap.AddStatistics("GET", "/", "&controllers.MainController", time.Duration(13000))
 
+	this.Layout = "main_layout.tpl"
+	this.TplName = "index.tpl"
+
 	translate := translate.New()
 	lang := this.GetString("lang")
 	if lang != "" {
@@ -31,10 +34,9 @@ func (this *MainController) Get() {
 
 	session := this.GetSession("session")
 	if session == nil {
-		this.Data["NoReg"] = "You are not register"
+		return
 	}
+	this.Data["Registred"] = true
+	this.Data["Session"] = session.(map[string]interface{})
 
-	this.Data["NoReg"] = session
-	this.Layout = "main_layout.tpl"
-	this.TplName = "index.tpl"
 }
