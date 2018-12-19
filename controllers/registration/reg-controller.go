@@ -4,6 +4,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/validation"
 	"github.com/oreuta/easytrip/models"
+	"github.com/oreuta/easytrip/services/registration"
 )
 
 type RegController struct {
@@ -32,9 +33,12 @@ func (this *RegController) Post() {
 		this.Data["Errors"] = valid.ErrorsMap
 		return
 	}
-	// if !registration.CanRegistr(u){
 
-	// }
+	reg := registration.New()
+	if !reg.CanRegistr(&u) {
+		this.Data["Errors"] = "Error"
+		return
+	}
 
 	this.Redirect("/login", 303)
 
