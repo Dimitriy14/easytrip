@@ -39,11 +39,7 @@ func (this *RegController) Post() {
 	logs.Info("%+v", u)
 
 	reg := registration.New()
-<<<<<<< HEAD
-	if reg.CanRegistr(&u) {
-=======
 	if !reg.CanRegistr(u) {
->>>>>>> 72ec921dfa1519043947532dcf4899d6b40c6291
 		this.Data["Errors"] = "Error"
 		return
 	}
