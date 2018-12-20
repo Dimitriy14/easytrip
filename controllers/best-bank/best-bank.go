@@ -88,5 +88,8 @@ func (r *bestBankController) Get() {
 	user.Login = usermap["login"].(string)
 	user.Password = usermap["password"].(string)
 
-	repository.InsertHist(user, inpData, "comparision")
+	check := repository.InsertHist(user, inpData, "best")
+	if check != nil {
+		beego.Error(check)
+	}
 }
