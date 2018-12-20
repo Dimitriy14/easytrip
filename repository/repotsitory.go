@@ -8,6 +8,8 @@ import (
 	"strings"
 	"time"
 
+	"github.com/astaxie/beego"
+
 	"github.com/astaxie/beego/logs"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/oreuta/easytrip/clients"
@@ -182,12 +184,13 @@ func HistoryView(data models.User) ([]models.FullRequest, error) {
 
 	var temp models.FullRequest
 	var cur, ban string
-	rows, err := db.Query("select history.hist,history.currency,history.opt,history.bank from users where users.id=?", id)
+	beego.Info("User id %v", id)
+	rows, err := db.Query("select hist, currency, opt, bank from history where history.Id=?", id)
 	if err != nil {
 		return nil, fmt.Errorf("HistoryView: Query select(2) error:%v", err)
 	}
 	for rows.Next() {
-		err = rows.Scan(&temp.Link, &cur, temp.Start.Option, &ban)
+		err = rows.Scan(&temp.Link, &cur, &temp.Start.Option, &ban)
 		if err != nil {
 			return nil, fmt.Errorf("HistoryView: rows.Scan(2) error:%v", err)
 		}

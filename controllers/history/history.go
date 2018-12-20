@@ -3,6 +3,7 @@ package historyController
 import (
 	"github.com/astaxie/beego"
 	"github.com/oreuta/easytrip/models"
+	"github.com/oreuta/easytrip/repository"
 )
 
 type HistoryController struct {
@@ -11,6 +12,7 @@ type HistoryController struct {
 
 func (this *HistoryController) Get() {
 
+	this.TplName = "history.tpl"
 	session := this.GetSession("session")
 	if session == nil {
 		return
@@ -21,6 +23,11 @@ func (this *HistoryController) Get() {
 	user.Login = usermap["login"].(string)
 	user.Password = usermap["password"].(string)
 
-	this.TplName = "history.tpl"
+	r, err := repository.HistoryView(user)
+	if err != nil {
+		beego.Error(err)
+		return
+	}
+	this.Data["Req"] = r
 
 }
