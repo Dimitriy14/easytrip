@@ -1,22 +1,20 @@
-package controllers
+package statistics
 
 import (
-	"time"
+	_ "github.com/oreuta/easytrip/controllers"
+	_ "github.com/oreuta/easytrip/controllers/bank-rating"
+	_ "github.com/oreuta/easytrip/controllers/best-bank"
+	"github.com/oreuta/easytrip/translate"
 
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/toolbox"
-	"github.com/oreuta/easytrip/translate"
 )
 
-type MainController struct {
+type StatisticController struct {
 	beego.Controller
 }
 
-func (this *MainController) Get() {
-	toolbox.StatisticsMap.AddStatistics("GET", "/", "&controllers.MainController", time.Duration(13000))
-
-	this.Layout = "main_layout.tpl"
-	this.TplName = "index.tpl"
+func (this *StatisticController) Get() {
 
 	translate := translate.New()
 	lang := this.GetString("lang")
@@ -32,11 +30,8 @@ func (this *MainController) Get() {
 	translate.Path = "conf/locale_" + translate.Lang + ".ini"
 	this.Data["i18n"] = translate.Tr
 
-	session := this.GetSession("session")
-	if session == nil {
-		return
-	}
-	this.Data["Registred"] = true
-	this.Data["Session"] = session.(map[string]interface{})
-
+	statistic := toolbox.StatisticsMap.GetMap()
+	this.Data["Stat"] = statistic["Data"]
+	this.Data["Statistic"] = statistic["Fields"]
+	this.TplName = "statistic.tpl"
 }

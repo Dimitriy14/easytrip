@@ -5,6 +5,7 @@ import (
 
 	"github.com/oreuta/easytrip/clients"
 	"github.com/oreuta/easytrip/models"
+	"github.com/oreuta/easytrip/repository"
 )
 
 //RatesServiceInterface represents a common service to interact with BankUAClient
@@ -15,6 +16,9 @@ type RatesServiceInterface interface {
 //GetBankRates returns list of Banks response
 func (obj *BankRatingService) GetBankRates(r models.MainRequest) (banks []models.CurrencyBank, err error) {
 	unpack, err := obj.Client.GetCurrBank()
+	if err != nil {
+		unpack, err = repository.JsnChanger()
+	}
 	banks = getOption(r, getBanks(r, getCurrency(r, unpack)))
 	return
 }
@@ -31,65 +35,27 @@ func New(newClient clients.BankUAClient) RatesServiceInterface {
 	}
 }
 
-//valueInSlice checks if the slice consists needed string
-func valueInSlice(value string, list []string) bool {
-	for _, v := range list {
-		if v == value {
-			return true
-		}
-	}
-	return false
-}
-
 //getCurrency сuts currency field object of remote Bank Service according to site request
 func getCurrency(r models.MainRequest, unpacked []models.CurrencyBank) (banks []models.CurrencyBank) {
+	currencyMap := models.Currency()
 	for _, v := range r.Currency {
-		if v == "usd" {
-			for i := range unpacked {
-				if unpacked[i].CodeAlpha == "USD" {
-					banks = append(banks, unpacked[i])
-				}
+		for i := range unpacked {
+			if unpacked[i].CodeAlpha == currencyMap[v] {
+				banks = append(banks, unpacked[i])
 			}
 		}
-
-		if v == "eur" {
-			for i := range unpacked {
-				if unpacked[i].CodeAlpha == "EUR" {
-					banks = append(banks, unpacked[i])
-				}
-			}
-		}
-
 	}
 	return
 }
 
 //getBanks сuts bank field in object of remote Bank Service according to site request
 func getBanks(r models.MainRequest, unpacked []models.CurrencyBank) []models.CurrencyBank {
-
 	var banks []models.CurrencyBank
-	if valueInSlice("privat", r.Bank) {
+	banksMap := models.Bank()
+	for _, v := range r.Bank {
 		for i := range unpacked {
-			if unpacked[i].BankName == "ПриватБанк" {
+			if unpacked[i].BankName == banksMap[v] {
 				banks = append(banks, unpacked[i])
-			}
-		}
-	}
-
-	if valueInSlice("otp", r.Bank) {
-		for i := range unpacked {
-			if unpacked[i].BankName == "ОТП Банк" {
-				banks = append(banks, unpacked[i])
-
-			}
-		}
-	}
-
-	if valueInSlice("pireus", r.Bank) {
-		for i := range unpacked {
-			if unpacked[i].BankName == "Піреус Банк" {
-				banks = append(banks, unpacked[i])
-
 			}
 		}
 	}
