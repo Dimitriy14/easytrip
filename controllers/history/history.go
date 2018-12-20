@@ -20,23 +20,7 @@ func (this *HistoryController) Get() {
 	user.Name = usermap["name"].(string)
 	user.Login = usermap["login"].(string)
 	user.Password = usermap["password"].(string)
-	r := []models.MainRequest{
-		{
-			Currency: []string{"eur", "usd"},
-			Option:   "both",
-			Bank:     []string{"pireus", "otp", "privat"},
-		},
-		{
-			Currency: []string{"eur", "usd"},
-			Option:   "buy",
-			Bank:     []string{"pireus", "otp", "privat"},
-		},
-		{
-			Currency: []string{"eur", "usd"},
-			Option:   "sale",
-			Bank:     []string{"pireus", "otp", "privat"},
-		},
-	}
-	_ = r
+
+	this.TplName = "history.tpl"
 
 }
