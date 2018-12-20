@@ -5,6 +5,7 @@ import (
 	"database/sql"
 	"encoding/hex"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/astaxie/beego/logs"
@@ -94,9 +95,9 @@ func InsertInto(data models.User) (err error) {
 func InsertHist(data models.User, req models.MainRequest, cont string) error {
 	var id int
 
-	link := requestConvert(req, cont)
+	s := requestConvert(req, cont)
 
-	rows, err := db.Query("select user.id from users where users.login=? and users.pass=?", data.Login, data.Password)
+	rows, err := db.Query("select users.id from users where users.login=? and users.pass=?", data.Login, data.Password)
 	if err != nil {
 		return fmt.Errorf("InsertHist: Query error:%v", err)
 	}
@@ -107,7 +108,7 @@ func InsertHist(data models.User, req models.MainRequest, cont string) error {
 		}
 	}
 
-	_, err = db.Exec("Insert into history values(?,?)", id, link)
+	_, err = db.Exec("Insert into history values(?,?,?,?,?)", id, s.Link, s.Currency, s.Option, s.Banks)
 	if err != nil {
 		return fmt.Errorf("InsertHist: Exec error:%v", err)
 	}
@@ -120,15 +121,84 @@ func getMD5Hash(text string) string {
 	return hex.EncodeToString(hasher.Sum(nil))
 }
 
-func requestConvert(req models.MainRequest, opt string) (res string) {
+func requestConvert(req models.MainRequest, opt string) (res models.HistoryStruct) {
 
-	res += "/" + opt + "?"
+	res.Link += "/" + opt + "?"
 	for i := range req.Bank {
-		res += "bank=" + req.Bank[i] + "&"
+		res.Link += "bank=" + req.Bank[i] + "&"
+		if len(req.Bank) == i-1 {
+			res.Banks += req.Bank[i]
+		} else {
+			res.Banks += req.Bank[i] + ","
+		}
 	}
 	for i := range req.Currency {
-		res += "currency=" + req.Bank[i] + "&"
+		res.Link += "currency=" + req.Currency[i] + "&"
+		if len(req.Bank) == i-1 {
+			res.Currency += req.Currency[i]
+		} else {
+			res.Currency += req.Currency[i] + ","
+		}
 	}
-	res += "option=" + req.Option
+	res.Link += "option=" + req.Option
+	res.Option = req.Option
 	return
+}
+
+func getID(data models.User) (int, error) {
+	var id int
+	rows, err := db.Query("select users.id from users where users.login=? and users.pass=?", data.Login, data.Password)
+	if err != nil {
+		return id, fmt.Errorf("getId: Query error:%v", err)
+	}
+
+	if rows.Next() {
+		err = rows.Scan(&id)
+		if err != nil {
+			return id, fmt.Errorf("getId: rows.Scan error:%v", err)
+		}
+	}
+	return id, nil
+}
+
+func HistoryView(data models.User) ([]models.FullRequest, error) {
+	//var id int
+	var result []models.FullRequest
+	// rows, err := db.Query("select users.id from users where users.login=? and users.pass=?", data.Login, data.Password)
+	// if err != nil {
+	// 	return nil, fmt.Errorf("HistoryView: Query error:%v", err)
+	// }
+
+	// if rows.Next() {
+	// 	err = rows.Scan(&id)
+	// 	if err != nil {
+	// 		return nil, fmt.Errorf("HistoryView: rows.Scan error:%v", err)
+	// 	}
+	// }
+	id, err1 := getID(data)
+	if err1 != nil {
+		return nil, fmt.Errorf("HistoryView: getId func error", err1)
+	}
+
+	var temp models.FullRequest
+	var cur, ban string
+	rows, err := db.Query("select history.hist,history.currency,history.opt,history.bank from users where users.id=?", id)
+	if err != nil {
+		return nil, fmt.Errorf("HistoryView: Query select(2) error:%v", err)
+	}
+	for rows.Next() {
+		err = rows.Scan(&temp.Link, &cur, temp.Start.Option, &ban)
+		if err != nil {
+			return nil, fmt.Errorf("HistoryView: rows.Scan(2) error:%v", err)
+		}
+		temp.Start.Bank = strings.Split(ban, ",")
+		temp.Start.Currency = strings.Split(cur, ",")
+		if strings.Contains(temp.Link, "best") {
+			temp.Method = "Best choice"
+		} else {
+			temp.Method = "Comparing"
+		}
+		result = append(result, temp)
+	}
+	return result, nil
 }

@@ -7,6 +7,12 @@ type MainRequest struct {
 	Bank     []string
 }
 
+type FullRequest struct {
+	Start  MainRequest
+	Link   string
+	Method string
+}
+
 //CurrencyBank gives definition of banks
 type CurrencyBank struct {
 	BankName  string
@@ -42,4 +48,10 @@ type User struct {
 	Name     string `valid:"Required;MinSize(3);Alpha"`
 	Login    string `valid:"Required;MinSize(3)"`
 	Password string `valid:"Required;MinSize(4)"`
+}
+type HistoryStruct struct {
+	Link     string
+	Banks    string
+	Currency string
+	Option   string
 }

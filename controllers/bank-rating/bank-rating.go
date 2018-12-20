@@ -85,6 +85,9 @@ func (this *RatesController) Get() {
 	user.Login = usermap["login"].(string)
 	user.Password = usermap["password"].(string)
 
-	repository.InsertHist(user, r, "comparision")
+	check := repository.InsertHist(user, r, "comparision")
+	if check != nil {
+		beego.Error(check)
+	}
 
 }
