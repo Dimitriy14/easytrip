@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/toolbox"
 	"github.com/oreuta/easytrip/models"
+	"github.com/oreuta/easytrip/repository"
 	"github.com/oreuta/easytrip/services/bank-rating"
 	"github.com/oreuta/easytrip/translate"
 )
@@ -75,15 +76,15 @@ func (this *RatesController) Get() {
 	this.TplName = "comparision.tpl"
 
 	session := this.GetSession("session")
+	if session == nil {
+		return
+	}
 	usermap := session.(map[string]interface{})
 	var user models.User
 	user.Name = usermap["name"].(string)
 	user.Login = usermap["login"].(string)
 	user.Password = usermap["password"].(string)
-	if session == nil {
-		return
-	}
 
-	// InsertHist(user,r,"comparision")
+	repository.InsertHist(user, r, "comparision")
 
 }

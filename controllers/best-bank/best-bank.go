@@ -6,6 +6,7 @@ import (
 	"github.com/astaxie/beego"
 	"github.com/astaxie/beego/toolbox"
 	"github.com/oreuta/easytrip/models"
+	"github.com/oreuta/easytrip/repository"
 	"github.com/oreuta/easytrip/services/best-bank"
 	"github.com/oreuta/easytrip/translate"
 )
@@ -76,4 +77,16 @@ func (r *bestBankController) Get() {
 	if sale != nil {
 		r.Data["TitleSale"] = "Best_Sale"
 	}
+
+	session := r.GetSession("session")
+	if session == nil {
+		return
+	}
+	usermap := session.(map[string]interface{})
+	var user models.User
+	user.Name = usermap["name"].(string)
+	user.Login = usermap["login"].(string)
+	user.Password = usermap["password"].(string)
+
+	repository.InsertHist(user, inpData, "comparision")
 }
