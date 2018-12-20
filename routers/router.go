@@ -7,6 +7,7 @@ import (
 	"github.com/oreuta/easytrip/controllers/bank-rating"
 	"github.com/oreuta/easytrip/controllers/best-bank"
 	"github.com/oreuta/easytrip/controllers/login"
+	"github.com/oreuta/easytrip/controllers/logout"
 	"github.com/oreuta/easytrip/controllers/registration"
 	"github.com/oreuta/easytrip/controllers/statistics"
 	"github.com/oreuta/easytrip/services/bank-rating"
@@ -30,4 +31,5 @@ func init() {
 	beego.Router("/statistics", &statistics.StatisticController{})
 	beego.Router("/signup", regCont)
 	beego.Router("/login", loginCont)
+	beego.Router("/logout", &logout.LogoutController{})
 }

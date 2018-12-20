@@ -57,8 +57,13 @@
       <div class="form-window">
           <div class="button-center">
             <a class="button" href = "/statistics">{{call .i18n "Get_statistics"}}</a>
+            {{if .Registred}}
+              <a class="button" href = "/logout">Log out</a>
+            {{else}}
             <a class="button" href = "/signup">Registration</a>
             <a class="button" href = "/login">Log in</a>
+            {{end}}
+           
           </div>
       </div>     
     </div>
