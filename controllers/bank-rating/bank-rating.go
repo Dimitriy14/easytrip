@@ -73,4 +73,17 @@ func (this *RatesController) Get() {
 	this.Data["Banks"] = b
 	this.Layout = "comparision_layout.tpl"
 	this.TplName = "comparision.tpl"
+
+	session := this.GetSession("session")
+	usermap := session.(map[string]interface{})
+	var user models.User
+	user.Name = usermap["name"].(string)
+	user.Login = usermap["login"].(string)
+	user.Password = usermap["password"].(string)
+	if session == nil {
+		return
+	}
+
+	// InsertHist(user,r,"comparision")
+
 }
