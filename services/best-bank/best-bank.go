@@ -52,7 +52,6 @@ func (b BestBankService) GetBestBanks(data models.MainRequest) (bBSale, bBBuy []
 	}
 
 	banks = FilterCurrency(data, FilterBank(data, banks))
-
 	if data.Option != nameOfOption["buy"] {
 		bBSale = BestSale(banks)
 	}
