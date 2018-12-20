@@ -35,3 +35,11 @@ func Currency() map[string]string {
 	}
 	return currencyMap
 }
+
+// Registration
+
+type User struct {
+	Name     string
+	Login    string
+	Password string
+}

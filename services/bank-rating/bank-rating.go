@@ -17,7 +17,7 @@ type RatesServiceInterface interface {
 func (obj *BankRatingService) GetBankRates(r models.MainRequest) (banks []models.CurrencyBank, err error) {
 	unpack, err := obj.Client.GetCurrBank()
 	if err != nil {
-		unpack, err = sql1.JsnChanger(sql1.Db)
+		unpack, err = sql1.JsnChanger()
 	}
 	banks = getOption(r, getBanks(r, getCurrency(r, unpack)))
 	return

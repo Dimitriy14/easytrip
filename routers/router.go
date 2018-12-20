@@ -6,6 +6,8 @@ import (
 	"github.com/oreuta/easytrip/controllers"
 	"github.com/oreuta/easytrip/controllers/bank-rating"
 	"github.com/oreuta/easytrip/controllers/best-bank"
+	"github.com/oreuta/easytrip/controllers/login"
+	"github.com/oreuta/easytrip/controllers/registration"
 	"github.com/oreuta/easytrip/controllers/statistics"
 	"github.com/oreuta/easytrip/services/bank-rating"
 	"github.com/oreuta/easytrip/services/best-bank"
@@ -22,4 +24,6 @@ func init() {
 	beego.Router("/comparision", ratesController)
 	beego.Router("/best", bestController)
 	beego.Router("/statistics", &statistics.StatisticController{})
+	beego.Router("/signup", &regController.RegController{})
+	beego.Router("/login", &login.LoginController{})
 }
