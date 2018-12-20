@@ -1,4 +1,4 @@
-package sql1
+package repository
 
 import (
 	"crypto/md5"
@@ -91,8 +91,44 @@ func InsertInto(data models.User) (err error) {
 	return err
 }
 
+func InsertHist(data models.User, req models.MainRequest, cont string) error {
+	var id int
+
+	link := requestConvert(req, cont)
+
+	rows, err := db.Query("select user.id from users where users.login=? and users.pass=?", data.Login, data.Password)
+	if err != nil {
+		return fmt.Errorf("InsertHist: Query error:%v", err)
+	}
+	if rows.Next() {
+		err = rows.Scan(&id)
+		if err != nil {
+			return fmt.Errorf("InsertHist: rows.Scan error:%v", err)
+		}
+	}
+
+	_, err = db.Exec("Insert into history values(?,?)", id, link)
+	if err != nil {
+		return fmt.Errorf("InsertHist: Exec error:%v", err)
+	}
+	return nil
+}
+
 func getMD5Hash(text string) string {
 	hasher := md5.New()
 	hasher.Write([]byte(text))
 	return hex.EncodeToString(hasher.Sum(nil))
+}
+
+func requestConvert(req models.MainRequest, opt string) (res string) {
+
+	res += "/" + opt + "?"
+	for i := range req.Bank {
+		res += "bank=" + req.Bank[i] + "&"
+	}
+	for i := range req.Currency {
+		res += "currency=" + req.Bank[i] + "&"
+	}
+	res += "option=" + req.Option
+	return
 }

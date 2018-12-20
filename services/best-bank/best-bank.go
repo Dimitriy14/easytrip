@@ -5,7 +5,7 @@ import (
 	"sort"
 	"strings"
 
-	"github.com/oreuta/easytrip/sql1"
+	"github.com/oreuta/easytrip/repository"
 
 	"github.com/oreuta/easytrip/clients"
 	"github.com/oreuta/easytrip/models"
@@ -47,7 +47,7 @@ func (b BestBankService) GetBestBanks(data models.MainRequest) (bBSale, bBBuy []
 	banks, err := b.Client.GetCurrBank()
 	if err != nil {
 		fmt.Errorf("Method Get in Client BankUACient: %v", err)
-		banks, _ := sql1.JsnChanger()
+		banks, _ := repository.JsnChanger()
 		_ = banks
 	}
 
