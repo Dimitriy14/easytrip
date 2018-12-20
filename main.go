@@ -19,6 +19,7 @@ func main() {
 	}
 
 	beego.BConfig.Listen.HTTPPort, err = strconv.Atoi(port)
+	beego.BConfig.WebConfig.Session.SessionOn = true
 	if err != nil {
 		panic(err)
 	}

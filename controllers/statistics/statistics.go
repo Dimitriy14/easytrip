@@ -32,5 +32,6 @@ func (this *StatisticController) Get() {
 
 	statistic := toolbox.StatisticsMap.GetMap()
 	this.Data["Stat"] = statistic["Data"]
+	this.Data["Statistic"] = statistic["Fields"]
 	this.TplName = "statistic.tpl"
 }
