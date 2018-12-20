@@ -4,7 +4,7 @@ import (
 	"os"
 	"strconv"
 
-	"github.com/oreuta/easytrip/sql1"
+	"github.com/oreuta/easytrip/repository"
 
 	"github.com/astaxie/beego"
 	_ "github.com/oreuta/easytrip/clients"
@@ -23,6 +23,6 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	go sql1.Update()
+	go repository.Update()
 	beego.Run()
 }

@@ -2,6 +2,7 @@ package login
 
 import (
 	"github.com/astaxie/beego"
+	"github.com/astaxie/beego/logs"
 	"github.com/oreuta/easytrip/models"
 	"github.com/oreuta/easytrip/services/registration"
 )
@@ -23,8 +24,9 @@ func (this *LoginController) Post() {
 		Password: this.GetString("password"),
 	}
 
-	userName, ok := this.Regist.CanLogIN(u)
-	if !ok {
+	userName, err := this.Regist.CanLogIN(u)
+	if err != nil {
+		logs.Info(err)
 		this.Data["Errors"] = "Error"
 		return
 	}

@@ -1,4 +1,4 @@
-package sql1
+package repository
 
 import (
 	"crypto/md5"
@@ -66,39 +66,69 @@ func JsnChanger() (res []models.CurrencyBank, err error) {
 	return
 }
 
-func CheckUser(data models.User) (user models.User, ok bool) {
-	//pass := getMD5Hash(data.Password)
-	rows, err := db.Query("SELECT users.name,users.login,users.pass FROM users where users.login=? and users.pass=?", data.Login, data.Password)
-	// if err != nil {
-	// 	return user, false
-	// }
-	for rows.Next() {
-		err = rows.Scan(&user.Name, &user.Login, &user.Password)
-		logs.Info(err)
-		if err != nil {
-			return user, false
-		}
-		return user, true
+func CheckUser(data models.User) (user models.User, err error) {
+	data.Password = getMD5Hash(data.Password)
+	rows, err1 := db.Query("SELECT users.name,users.login,users.pass FROM users where users.login=? and users.pass=?", data.Login, data.Password)
+	if err != nil {
+		return user, fmt.Errorf("query select failed err:%v\n", err1)
 	}
-	return
+	if rows.Next() {
+		err = rows.Scan(&user.Name, &user.Login, &user.Password)
+		if err != nil {
+			return user, fmt.Errorf("scan err:%v\n", err)
+		}
+	}
+	return user, err
 }
 
-func InsertInto(data models.User) (res bool) {
-	// data.Password = getMD5Hash(data.Password)
-	result, err := db.Exec("insert into users(name, login, pass) values(?,?,?)", data.Name, data.Login, data.Password)
+func InsertInto(data models.User) (err error) {
+	data.Password = getMD5Hash(data.Password)
+	_, err = db.Exec("insert into users(name, login, pass) values(?,?,?)", data.Name, data.Login, data.Password)
 	if err != nil {
-		logs.Info("db.exec(Insert) err trouble : %v", err)
-		return false
+		return fmt.Errorf("db.exec(Insert) err trouble : %v", err)
 	}
-	if result == nil {
-		logs.Info("db.exec(Insert) result trouble: %v", result)
-		return false
+
+	return err
+}
+
+func InsertHist(data models.User, req models.MainRequest, cont string) error {
+	var id int
+
+	link := requestConvert(req, cont)
+
+	rows, err := db.Query("select user.id from users where users.login=? and users.pass=?", data.Login, data.Password)
+	if err != nil {
+		return fmt.Errorf("InsertHist: Query error:%v", err)
 	}
-	return true
+	if rows.Next() {
+		err = rows.Scan(&id)
+		if err != nil {
+			return fmt.Errorf("InsertHist: rows.Scan error:%v", err)
+		}
+	}
+
+	_, err = db.Exec("Insert into history values(?,?)", id, link)
+	if err != nil {
+		return fmt.Errorf("InsertHist: Exec error:%v", err)
+	}
+	return nil
 }
 
 func getMD5Hash(text string) string {
 	hasher := md5.New()
 	hasher.Write([]byte(text))
 	return hex.EncodeToString(hasher.Sum(nil))
+}
+
+func requestConvert(req models.MainRequest, opt string) (res string) {
+
+	res += "/" + opt + "?"
+	for i := range req.Bank {
+		res += "bank=" + req.Bank[i] + "&"
+	}
+	for i := range req.Currency {
+		res += "currency=" + req.Bank[i] + "&"
+	}
+	res += "option=" + req.Option
+	return
 }

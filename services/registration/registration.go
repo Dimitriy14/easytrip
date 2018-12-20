@@ -1,27 +1,25 @@
 package registration
 
 import (
-	"github.com/astaxie/beego/logs"
 	"github.com/oreuta/easytrip/models"
-	"github.com/oreuta/easytrip/sql1"
+	"github.com/oreuta/easytrip/repository"
 )
 
 type RegService interface {
-	CanRegistr(data models.User) (res bool)
-	CanLogIN(data models.User) (user models.User, ok bool)
+	CanRegistr(data models.User) (err error)
+	CanLogIN(data models.User) (user models.User, err error)
 }
 
 type RegServiceStruct struct{}
 
-func (a *RegServiceStruct) CanRegistr(data models.User) (res bool) {
-	res = sql1.InsertInto(data)
+func (a *RegServiceStruct) CanRegistr(data models.User) (err error) {
+	err = repository.InsertInto(data)
 	return
 }
 
-func (a *RegServiceStruct) CanLogIN(data models.User) (user models.User, ok bool) {
-	user, ok = sql1.CheckUser(data)
-	logs.Info(user)
-	return user, true
+func (a *RegServiceStruct) CanLogIN(data models.User) (user models.User, err error) {
+	user, err = repository.CheckUser(data)
+	return
 }
 
 func New() RegService {
