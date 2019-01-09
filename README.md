@@ -1,5 +1,4 @@
-# easytrip
-Easy Trip Project
+Exchange rates
 
 Try [this](https://goeasytrip.herokuapp.com/)
 
